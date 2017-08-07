@@ -1,0 +1,254 @@
+\lhead[]{}
+\rhead[]{}
+\chead[参考文献]{参考文献}
+
+# 参考文献
+
+---
+fontsize: 16pt
+link-citations: true
+
+references:
+- id: North2006
+  tile: "Introducing BDD"
+  author:
+  - family: North
+    given: Dan
+  issued:
+    year: 2006
+  URL: https://dannorth.net/introducing-bdd/
+- id: Adzic2011
+  title: "Specification by Example"
+  author:
+  - family: Adzic
+    given: Gojko
+  publisher: Manning
+  issued:
+    year: 2011
+- id: Adzic2012
+  title: 'Impact Mapping: Making a big impact with software products and projects（「IMPACT MAPPING　インパクトのあるソフトウェアを作る」 翔泳社）'
+  author:
+  - family: Adzic
+    given: Gojko
+  publisher:  Provoking Thoughts
+  translator:
+  - family: 平鍋
+    given: 健児
+  - family: 上馬
+    given: 里美
+  issued:
+    year: 2012
+- id: Hansson2014
+  title: 'TDD is dead. Long live testing.'
+  URL: http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html
+  author:
+  - family: Hansson
+    given: David Heinemeier
+  issued:
+    year: 2014
+- id: Beck2002
+  title: 'Test-driven development ： by example(「テスト駆動開発入門」　ピアソンエデュケーション)'
+  author:
+  - family: Beck
+    given: Kent
+  translator:
+  - family: 長瀬
+    given: 嘉秀
+  publisher: Addison-Wesley
+  issued:
+    year: 2002
+  type: legal-case
+- id: Kniberg2011
+  title: 'リーン開発の現場　カンバンによる大規模プロジェクトの運営 オーム社'
+  author:
+  - family: Kniberg
+    given: Henrik
+  translator:
+  - family: 角谷
+    given: 信太郎
+  - family: 市谷
+    given: 聡啓
+  - family: 藤原
+    given: 大
+  publisher: 'The Pragmatic Programmers'
+  issued:
+    year: 2011
+- id: Thomas2000
+  title: '新装版 達人プログラマー 職人から名匠への道 オーム社'
+  author:
+  - given: Andrew
+    family: Hunt
+  - given: David
+    family: Thomas
+  translator:
+  - family: 村上
+    given: 雅章
+  publisher: 'Addison-Wesley'
+  issued:
+    year: 2000
+- id: Ishii2002
+  title: 'JUnit 実践講座 -シナリオベースのテストケースの書き方'
+  author:
+  - family: 石井
+    given: 勝
+  issued:
+    year: 2002
+  URL: 'http://objectclub.jp/community/memorial/homepage3.nifty.com/masarl/article/junit/scenario-based-testcase.html'
+- id: Coplien2014
+  title: 'Why Most Unit Testing is Waste'
+  author:
+  - given: James O
+    family:  Coplien
+  issued:
+    year: 2014
+  URL: 'http://rbcs-us.com/documents/Why-Most-Unit-Testing-is-Waste.pdf' 
+- id: Meszaros2007
+  title: 'xUnit Test Patterns'
+  author:
+  - given: Gerard
+    family: Meszaros
+  publisher: Addison-Wesley
+  issued:
+    year: 2007
+- id: Freeman2010
+  title: 'Growing Object-Oriented Software, Guided by Tests(実践テスト駆動開発 テストに導かれてオブジェクト指向ソフトウェアを育てる 翔泳社)'
+  author:
+  - given: Steve
+    family: Freeman
+  - given: Nat
+    family: Pryce
+  translator:
+  - family: 和智
+    given: 右桂 
+  - family: 髙木
+    given: 正広
+  publisher: Addison-Wesley
+  issued:
+    year: 2010
+- id: Oram2011
+  title: 'Making Software: What Really Works, and Why We Believe It(Making Software エビデンスが変えるソフトウェア開発 オライリー・ジャパン)'
+  author:
+  - family: Oram
+    given: Andy
+  - family: Wilson
+    given: Greg
+  translator:
+  - family: 久野
+    given: 禎子
+  - family: 久野
+    given: 靖
+  publisher: 'O''Reilly'
+  issued:
+    year: 2011
+- id: Smart2015
+  title: 'BDD in Action Behavior-Driven Development for the whole software lifecycle'
+  author:
+  - family: Smart
+    given: John Ferguson
+  publisher: 'Manning'
+  issued:
+    year: 2015
+- id: Goyoki2012
+  title: 'xUnit Test PatternsのTest Doubleパターン(Mock、Stub、Fake、Dummy等の定義)'
+  author:
+  - family: goyoki
+  issued:
+    year: 2012  
+  URL: http://goyoki.hatenablog.com/entry/20120301/1330608789
+- id: Kakutani2007
+  title: 'スはスペックのス 【第 1 回】 RSpec の概要と、RSpec on Rails (モデル編)'
+  author:
+  - family: かくたに
+  - family: もろはし
+  issued:
+    year: 2007
+  type: article-journal
+  language: ja
+  volumn: 0021 号
+  container-title: Rubyist Magazine
+  URL: http://magazine.rubyist.net/?0021-Rspec
+- id: Crispin2009
+  title: 'Agile Testing(実践アジャイルテスト テスターとアジャイルチームのための実践ガイド 翔泳社)'
+  author:
+  - family: Crispin
+    given: Lisa
+  - family: Gregory
+    given: Janet
+  translator:
+  - given: 彰
+    family: 榊原
+  - given: 直樹
+    family: 山腰
+  - given: 聡
+    family: 増田
+  - given: 正章
+    family: 石橋
+  publisher:  Addison-Wesley
+  language: ja
+  issued:
+    year: 2009
+- id: Huttermann2011a
+  title: 'Agile ALM: Lightweight Tools and Agile Strategies'
+  author:
+  - family: Hüttermann
+    given: Michael
+  issued:
+    year: 2011
+  publisher: Manning
+- id: Huttermann2011b
+  title: 'Agile ALM and Collaborative Development'
+  author:
+  - family: Hüttermann
+    given: Michael
+  issued:
+    year: 2011
+  URL: http://huettermann.net/perform/AgileALM-AgileRecord-Huettermann.pdf
+- id: Gregory2015   
+  title: 'More Agile Testting Learining Journeys For The Whole Team'
+  author:
+  - family: Gregory
+    given: Janet  
+  - family: Crispin
+    given: Lisa
+  issued:
+    year: 2015
+  publisher: Addison-Wesley
+- id: Rasmusson2010
+  title: 'The Agile Samurai: How Agile Masters Deliver Great Software(アジャイルサムライ−達人開発者への道− )'
+  author:
+  - family: Rasmusson
+    given:  Jonathan
+  - given: 直人
+    family:  西村 
+  - given: 信太郎
+    family: 角谷
+  - given: 修平
+    family: 近藤
+  - given: 拓未
+    family: 角掛 
+  issued:
+    year: 2010  
+- id: Morohashi2010
+  title: 'はじめる！ Cucumber'
+  author:
+  - family: 諸橋
+    given: 恭介
+  issued:
+    year: 2010     
+  publisher: 達人出版会
+- id: Appleton1998
+  title: 'Streamed Lines: Branching Patterns for Parallel Software Development'  
+  author:
+  - given: Brad
+    family: Appleton
+  - given: Stephen P. 
+    family: Berczuk
+  - given: Ralph
+    family: Cabrera
+  - given: Robert 
+    family: Orenstein
+  issued:
+    year: 1998    
+  URL: http://www.bradapp.com/acme/branching/pitfalls.html  
+---
+
