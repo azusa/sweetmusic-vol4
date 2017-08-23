@@ -24,7 +24,7 @@ Patrick Debois氏による「Agile Infrastructure and Operations」^[[http://www
 FlickrのエンジニアであるJohn Allspaw氏, Paul Hammond氏が「10+ Deploys per Day: Dev and Ops Cooperation at Flickr」という発表を行います。
 このこのプレゼンテーションをベルギーからストリーミングで視聴していたPatrick Debois氏が、
 「Devopsdays」というイベントを開く事を思い立ち、それが本格的なDevOpsムーブメントの始まりと
-なったとされています。[@Edwards2012] ^[[http://itrevolution.com/the-history-of-devops/](http://itrevolution.com/the-history-of-devops/)]この流れは@marubinotto氏^[[https://twitter.com/marubinotto](https://twitter.com/marubinotto)]によって「DevOpsの起源とOpsを巡る対立」
+なったとされています。[@Edwards2012] ^[[http://itrevolution.com/the-history-of-devops/](http://itrevolution.com/the-history-of-devops/)]ここに至る流れは@marubinotto氏^[[https://twitter.com/marubinotto](https://twitter.com/marubinotto)]によって「DevOpsの起源とOpsを巡る対立」
 ^[[https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/](https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/)] としてまとめられています。
 
 もともとソフトウェア開発は、「キーボードとディスプレイがあれば仕事が出来る」などと評されるように、
