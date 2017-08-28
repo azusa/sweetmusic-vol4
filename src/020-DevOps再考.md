@@ -24,8 +24,7 @@ Patrick Debois氏による「Agile Infrastructure and Operations」^[[http://www
 FlickrのエンジニアであるJohn Allspaw氏, Paul Hammond氏が「10+ Deploys per Day: Dev and Ops Cooperation at Flickr」という発表を行います。
 このこのプレゼンテーションをベルギーからストリーミングで視聴していたPatrick Debois氏が、
 「Devopsdays」というイベントを開く事を思い立ち、それが本格的なDevOpsムーブメントの始まりと
-なったとされています。[@Edwards2012] ^[[http://itrevolution.com/the-history-of-devops/](http://itrevolution.com/the-history-of-devops/)]ここに至る流れは@marubinotto氏^[[https://twitter.com/marubinotto](https://twitter.com/marubinotto)]によって「DevOpsの起源とOpsを巡る対立」
-^[[https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/](https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/)] としてまとめられています。
+なったとされています。[@Edwards2012] ^[[http://itrevolution.com/the-history-of-devops/](http://itrevolution.com/the-history-of-devops/)] ここに至る流れは@marubinotto氏 ^[[https://twitter.com/marubinotto](https://twitter.com/marubinotto)] によって「DevOpsの起源とOpsを巡る対立」 ^[[https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/](https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/)] としてまとめられています。
 
 もともとソフトウェア開発は、「キーボードとディスプレイがあれば仕事が出来る」などと評されるように、
 その対象となるドメインは、ソフトウェアとそれを構成するプログラミングの世界にある程度閉じて
@@ -45,7 +44,8 @@ FlickrのエンジニアであるJohn Allspaw氏, Paul Hammond氏が「10+ Deplo
 それに対しソフトウェア開発のプロセスは、アジャイルソフトウェア開発宣言(アジャイルマニフェスト)の
 「包括的なドキュメントよりも動くソフトウェア」という言い回しに象徴されるように、成果物としての
 ソフトウェアをどう構築するかという観点で発展を続け、その中で「バージョン管理、テスティング、自動化」という
-ソフトウェア開発そのものを技術的かつソフトウェア工学的なアプローチによって最適化していくアプローチを選んできました。
+プラクティスに代表されるように、ソフトウェア開発そのものを技術的かつソフトウェア工学的なアプローチによって
+最適化していくアプローチを選んできました。
 
 DevOpsという言葉が指すものには、どのステークホルダーがどのような視野から領域を捉えるかによって、
 様々な意味を含んでいます。しかし少なくともDevOpsというムーブメントの黎明期においては、インフラ構築や
@@ -55,9 +55,17 @@ DevOpsという言葉が指すものには、どのステークホルダーが�
 システム運用のプロセスに徹底した自動化を入れることにより、ソフトウェア運用のプロセスから手作業が
 介在する箇所を排して、運用担当者なしでの運用を目指す、NoOpsという考えがあります。
 
+もちろん技術面の発達によりソフトウェア運用のプロセスが合理化されていくなかで、開発プロセスを
+担当するソフトウェアエンジニアがインフラ構築や運用などの分野をある程度担うことも可能になってきました。
+また、インフラ構築にプログラミングの技法を導入する「Infrastructure as Code」に代表されるように、
+インフラエンジニアにソフトウェア開発のスキルが求められる流れは止められないものとなっています。
 
+しかし、インフラ構築に対する継続的インテグレーションや、アプリケーションのデプロイの自動化、
+Blue-Green Deployment（や～～）など、インフラ構築に関する技術の進展は、アプリケーションと自動化
+されたインフラ層のつなぎ目の部分に、新たな専門性を生み出しました。
 
-
-
-
+アプリケーションの構築、アーキテクチャーの策定、UIデザインからUXに至るまで幅広い領域を
+単独のエンジニアがカバーするフルスタックエンジニアという考えがあります。
+もともとこれは、スタートアップに代表されるような比較的短期間の開発の中で、素早く
+サービスをローンチして、投資の回収を可能にすることに最適化したスキームです。
 
