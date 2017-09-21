@@ -9,6 +9,14 @@ fontsize: 16pt
 link-citations: true
 
 references:
+- id: Edwards2012
+  title: "The History Of DevOps"
+  author:
+  - given: Damon
+    family: Edwards
+  issued:
+    year: 2012
+  URL: http://itrevolution.com/the-history-of-devops/
 - id: North2006
   tile: "Introducing BDD"
   author:
