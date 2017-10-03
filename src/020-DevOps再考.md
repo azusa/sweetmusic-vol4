@@ -20,7 +20,7 @@ Patrick Debois氏による「Agile Infrastructure and Operations」^[[http://www
 これを受けて2009年、米国サンノゼで開催されたVelocity 2009^[[https://conferences.oreilly.com/velocity/velocity2009
 ](https://conferences.oreilly.com/velocity/velocity2009
 )]に
-FlickrのエンジニアであるJohn Allspaw氏, Paul Hammond氏が「10+ Deploys per Day: Dev and Ops Cooperation at Flickr」という発表を行います。
+FlickrのエンジニアであるJohn Allspaw氏, Paul Hammond氏が「10+ Deploys per Day: Dev and Ops Cooperation at Flickr」[@Allspaw2009]^[[https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr](https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr)]という発表を行います。
 このこのプレゼンテーションをベルギーからストリーミングで視聴していたPatrick Debois氏が、
 「Devopsdays」というイベントを開く事を思い立ち、それが本格的なDevOpsムーブメントの始まりと
 なったとされています。[@Edwards2012] ^[[http://itrevolution.com/the-history-of-devops/](http://itrevolution.com/the-history-of-devops/)] ここに至るまでの流れは@marubinotto氏 ^[[https://twitter.com/marubinotto](https://twitter.com/marubinotto)] によって「DevOpsの起源とOpsを巡る対立」 ^[[https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/](https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/)] としてまとめられています。
@@ -73,7 +73,7 @@ Opsはシステムの安定運用のために保守的であるとされます�
 抑制するOpsという観点で、DevOpsを巡る背景は語られがちです。
 
 また、それを逆の側面から見れば、Devがスピード優先で品質を度外視してリリースした
-システムの運用を押しつけられ、疲弊するOpsという構図になります。
+システムの運用を押しつけられ、疲弊するOpsという構図になります。[@Kim2014]
 
 > これではいい結果が出るわけがない。通常、そのようなソフトウェアは安定せず、
 > 使いものにならないので、早くリリースしてくれと言っていた人々でさえ、
@@ -156,7 +156,7 @@ Opsが保守的であることに端を発するものではありません。
 この中では、ソフトウェア開発の中で最大のボトルネックとなる箇所は、プログラミングや
 デバッグなどの、いわゆる開発工程でした。そこでの手戻りのリスクを低減するために、
 ソフトウェアを実装する上での要件を予め厳密に定義し、プログラムの詳細設計や机上
-デバッグに一定の工数が咲かれてきました。そのため、工程の進行はウォーターフォールとなります。
+デバッグに一定の工数が割かれてきました。そのため、工程の進行はウォーターフォールとなります。
 
 その後、統合開発環境(IDE)によるインタラクティブなデバッガーを用いた開発が
 当然のものとなり、プログラミングの生産性が改善されると、ボトルネックはその後工程となる
@@ -169,7 +169,7 @@ Opsが保守的であることに端を発するものではありません。
 そしてその延長線上にあるクラウドであり、その特徴を生かしたのがInfrastructure as Codeです。
 
 技術の進展によりボトルネックが移動していく中で、リードタイムのずれを調整し、フィードバックサイクルを
-短縮するには、工程の全体最適化を見据えたマネジメントが必要になります。
+短縮するには、工程の全体最適化を見据えたマネジメントが必要になります。[@Gruver2016]
 
 
 >「継続的デリバリーは、コードのリリースを改善するための技術的な手法をすべてカバーしようとしている。
@@ -212,8 +212,8 @@ SoRは要件が確定しており変更も頻繁でないため、ウォータ�
 ビジネストランザクションを扱うSoRに分類されるシステムの開発・保守に関わる上で発生する
 問題が、新商品の開発などのビジネス展開に影響を及ぼしているというものです。
 
-SoE側は短期間でKPIの結果を出すことに汲汲とした結果、ユーザーからも変更の意味に疑問を投げかけるような
-画面デザインの細かい変更に少なくない人的リソースを投入するような場合もあります。
+またSoE側は短期間でKPIの結果を出すことに汲汲とした結果、ユーザーからも変更の意味に疑問を投げかけられる
+ような画面デザインの細かい変更に少なくないリソースを投入するような場合もあります。
 
 以上のことをまとめれば、SoRはビジネスを支援するためにアジリティーを意識すべきだし、SoEは刹那的なKPIに
 踊らされずに長期的な視野を持つべきである、ということになります。
@@ -223,7 +223,7 @@ SoE側は短期間でKPIの結果を出すことに汲汲とした結果、ユ�
 「10+ Deploys Per Day」という言葉のインパクトから、DevOpsでは、「頻繁にリリースする」
 ということが注目されるきらいがあります。
 
-しかし、「10+ Deploys Per Day」のスライドの中で「Opsの役割は、ビジネスを実現することである」
+しかし、「10+ Deploys Per Day」[@Allspaw2009]のスライドの中で「Opsの役割は、ビジネスを実現することである」
 (Ops' job is enable the business)としていることに象徴されるように、DevOpsが目指すものは、
 頻繁にリリースすることそのものではありません。
 
@@ -235,7 +235,7 @@ SoE側は短期間でKPIの結果を出すことに汲汲とした結果、ユ�
 2014年の「Google Test Automation Conference」のキーノートでは、
 モバイルアプリでは頻繁なリリースを行うと、ユーザーの端末のバッテリーと通信帯域を消費すること、
 リリースに失敗した場合のロールバックに困難を伴うことから、リリース頻度のバランスを取ることの
-必要性が指摘されています。
+必要性が指摘されています。[@Mehta2014]^[[https://docs.google.com/presentation/d/15gNk21rjer3xo-b1ZqyQVGebOp_aPvHU3YH7YnOMxtE/edit](https://docs.google.com/presentation/d/15gNk21rjer3xo-b1ZqyQVGebOp_aPvHU3YH7YnOMxtE/edit)]
 
 ## 「フルスタックエンジニア」とは何だったのか
 

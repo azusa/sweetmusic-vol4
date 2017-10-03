@@ -65,11 +65,56 @@ references:
   publisher: Addison-Wesley
 - id: Sato2015
   title: 'GebによるスマートなE2Eテスト…… シンプルなコードでブラウザ操作を自動化しよう'
- author:
+  author:
   - given: 太一
     family: 佐藤
- issued:
-   year: 2015   
-
+  issued:
+    year: 2015   
+- id: Kim2014
+  title: 'The Phoenix Project: A Novel About IT, DevOps, and Helping Your Business Win（「The DevOps 逆転だ! 究極の継続的デリバリー」）'
+  author:
+  - family: Kim
+    given: Gene
+  - family: Behr
+    given: kevin
+  issued:
+    year: 2014
+  publisher: 日経BP
+  translator:
+  - given: 彰
+    family: 榊原
+  - given: 高広
+    family: 長尾
+- id: Gruver2016
+  title: 'Leading the Transformation: Applying Agile and DevOps Principles at Scale(変革の軌跡【世界で戦える会社に変わる"アジャイル・DevOps"導入の原則】)'
+  author:
+  - family: Gary
+    given: Gruver
+  - family: Tommy
+    given: Kevin
+  issued:
+    year: 2016
+  publisher: 技術評論社
+  translator:
+  - given: 龍太郎
+    family: 吉羽
+  - given: 騎郎 
+    family: 原田
+- id: Allspaw2009
+  author:
+  - family: John
+    given: Allspaw
+  title: '10+ Deploys Per Day: Dev and Ops Cooperation at Flickr '
+  URL: https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr
+  issued:
+    year: 2009
+- id: Mehta2014
+  author:
+  - family: Ankit
+    given: Mehta
+  title: 'Move Fast & Don''t Break Things'
+  issued:
+    year: 2014
+  URL: https://docs.google.com/presentation/d/15gNk21rjer3xo-b1ZqyQVGebOp_aPvHU3YH7YnOMxtE/edit
 ---
 

@@ -180,10 +180,10 @@ environments {
 上記の例では、`build.gradle`内で`geb.env`にドライバーの種別を指定していますGebでは、
 使用するWebDriverを指定するのに、`GebConfig.groovy`内の`driver`という変数に
 
-- 文字列でWebDriverの実装クラスを指定する
-- クロージャーでWebDriverのインスタンスを返す
+- WebDriverの実装クラス名を指す文字列
+- WebDriverのインスタンスを返すクロージャー
 
-という仕様があるため^[[http://www.gebish.org/manual/current/#driver-class-name](http://www.gebish.org/manual/current/#driver-class-name)]、それぞれのブロック内でその処理を行っています。
+のどちらか示すという仕様があるため^[[http://www.gebish.org/manual/current/#driver-class-name](http://www.gebish.org/manual/current/#driver-class-name)]、それぞれのブロック内でその処理を行っています。
 
 Gebの`geb-example-gradle`等では、システムプロパティー`geb.env`を使用するブラウザーの
 切り替えに使用していますが、例えば開発環境とステージング環境等の複数環境でGebによる
@@ -205,12 +205,30 @@ Gradleでは`gradle.properties`ないしコマンド実行時の`-P`オプショ
 WebDriverはW3CでDriverのインターフェースと仕様が規定されており^[[https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebDriver.html](https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebDriver.html)]、
 
 それに対して、各ブラウザーがDriverの実装を提供するという枠組みになっています。
-`geb-example-gradle`ではChromeとFirefoxでの実装例が提供されています。
-
-Web
+`geb-example-gradle`ではChromeとFirefoxでの実装を指定する例が提供されて
+います。
 
 この際、ブラウザーによってはブラウザーとの間とのブリッジとなるネイティブランタイムを
-配置する必要があります。
+配置する必要があります。その場合、ランタイムのパスはWebDriverの指定とは別のシステムプロパティーで指定します。
+
+Chromeでは`chromedriver.exe`ないし`chromedriver`へのパスをシステムプロパティー
+`webdriver.chrome.driver`で
+指定します。
+
+Firefoxでは`geckodriver.exe`ないし`geckodriver`へのパスをシステムプロパティー`webdriver.gecko.driver`で指定します。
+
+Internet Exploer 11(IE11)では〜
+
+例えば、開発者の端末はWindowsであり、継続的インテグレーション(CI)のサーバー上では
+Linuxで実行されるように、複数の端末上でテストが実行される場合、スクリプト内で実行
+されるOSの判定を行い、適切な設定を行います。
+
+OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.condition.Os`で、
+`GebConfig.groovy`内ではサードパーティーのライブラリーであるCommons Langの`org.apache.commons.lang.SystemUtils`を用いて行います。
+
+### Edge
+
+
 
 ※いきなりクロスブラウザーはおすすめしない
 
@@ -224,6 +242,17 @@ Web
 ## WebDriverでは
 
 ## レポーティング
+
+## スクリーンショット取得時の注意点
+
+```
+reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter() {
+    @Override
+    protected escapeFileName(String name) {
+        name.replaceAll(/^[\\\/:\*?"<>\|\s]+$/, "_")
+    }
+})
+```
 
 ## 録画
 
