@@ -144,7 +144,46 @@ to GebishOrgHomePage
 Gebでは、クラスパス上の`GebConfig.groovy`上にテストを実行する上での
 各種設定を記述します。
 
-環境によって設定値を切り替える場合は、Gebでは、実行時にシステムプロパティー`geb.env`を設定することにより、`GebConfig.groovy`の`environments`ブロックで設定値の切り替えを行うことができます。
+環境によって設定値を切り替える場合は、Gebでは、実行時にシステムプロパティー`geb.env`を設定することにより、`GebConfig.groovy`の`environments`ブロックで設定値の切り替えを行うことができます。^[[https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy](https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy)]
+
+```
+environments {
+	
+	// run via “./gradlew chromeTest”
+	// See: http://code.google.com/p/selenium/wiki/ChromeDriver
+	chrome {
+		driver = { new ChromeDriver() }
+	}
+
+	// run via “./gradlew chromeHeadlessTest”
+	// See: http://code.google.com/p/selenium/wiki/ChromeDriver
+	chromeHeadless {
+		driver = {
+			ChromeOptions o = new ChromeOptions()
+			o.addArguments('headless')
+			new ChromeDriver(o)
+		}
+	}
+	
+	// run via “./gradlew firefoxTest”
+	// See: http://code.google.com/p/selenium/wiki/FirefoxDriver
+	firefox {
+		atCheckWaiting = 1
+
+		driver = { new FirefoxDriver() }
+	}
+
+}
+
+```
+
+上記の例では、`build.gradle`内で`geb.env`にドライバーの種別を指定していますGebでは、
+使用するWebDriverを指定するのに、`GebConfig.groovy`内の`driver`という変数に
+
+- 文字列でWebDriverの実装クラスを指定する
+- クロージャーでWebDriverのインスタンスを返す
+
+という仕様があるため^[[http://www.gebish.org/manual/current/#driver-class-name](http://www.gebish.org/manual/current/#driver-class-name)]、それぞれのブロック内でその処理を行っています。
 
 Gebの`geb-example-gradle`等では、システムプロパティー`geb.env`を使用するブラウザーの
 切り替えに使用していますが、例えば開発環境とステージング環境等の複数環境でGebによる
@@ -163,12 +202,26 @@ Gebの`geb-example-gradle`等では、システムプロパティー`geb.env`を
 Gradleでは`gradle.properties`ないしコマンド実行時の`-P`オプションでプロパティーを
 指定するのが一般的です。
 
+WebDriverはW3CでDriverのインターフェースと仕様が規定されており^[[https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebDriver.html](https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebDriver.html)]、
+
+それに対して、各ブラウザーがDriverの実装を提供するという枠組みになっています。
+`geb-example-gradle`ではChromeとFirefoxでの実装例が提供されています。
+
+Web
+
+この際、ブラウザーによってはブラウザーとの間とのブリッジとなるネイティブランタイムを
+配置する必要があります。
+
+※いきなりクロスブラウザーはおすすめしない
+
 ## マルチステージ
 
 先述した通り、Gebでは、実行時にシステムプロパティー`geb.env`を設定することにより、
 `GebConfig.groovy`の`environments`ブロックで設定値の切り替えを行うことが
 できます。これを使用した`GebConfig.groovy`の記述のサンプルは以下の通りと
 なります。
+
+## WebDriverでは
 
 ## レポーティング
 
@@ -186,6 +239,8 @@ Gebは公式の英語によるドキュメントが充実しており、Gebを�
 まずこちらを参照するとよいでしょう。
 
 日本語のリソースとしては、WEB+DB PRESS VOL.85の「GebによるスマートなE2Eテスト」[@Sato2015]が
-あげられます。また2016年12月に開かれた「Geb Advent Calendar 2016」^[[https://qiita.com/advent-calendar/2016/geb](https://qiita.com/advent-calendar/2016/geb)] にも日本語でのGebに【関するエントリーが集積されています。
+あげられます。また2016年12月に開かれた「Geb Advent Calendar 2016」^[[https://qiita.com/advent-calendar/2016/geb](https://qiita.com/advent-calendar/2016/geb)] にも日本語でのGebに関するエントリーが集積されています。
 
+- Gebのソースコード読みやすいし
+- コミュニティーも親切だしhttps://youtu.be/yKFHmLYCfn0?t=2m9s
 
