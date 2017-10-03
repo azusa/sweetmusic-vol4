@@ -211,23 +211,26 @@ WebDriverはW3CでDriverのインターフェースと仕様が規定されて�
 この際、ブラウザーによってはブラウザーとの間とのブリッジとなるネイティブランタイムを
 配置する必要があります。その場合、ランタイムのパスはWebDriverの指定とは別のシステムプロパティーで指定します。
 
-Chromeでは`chromedriver.exe`ないし`chromedriver`へのパスをシステムプロパティー
+Chromeでは`chromedriver.exe`ないし`chromedriver`への絶対パスをシステムプロパティー
 `webdriver.chrome.driver`で
 指定します。
 
-Firefoxでは`geckodriver.exe`ないし`geckodriver`へのパスをシステムプロパティー`webdriver.gecko.driver`で指定します。
+Firefoxでは`geckodriver.exe`ないし`geckodriver`への絶対パスをシステムプロパティー`webdriver.gecko.driver`で指定します。
 
-Internet Exploer 11(IE11)では〜
+Internet Exploer 11(IE11)では`IEDriverServer.exe`への絶対パスをシステムプロパティー
+`webdriver.ie.driver`で指定します。また、`InternetExplorerDriver`ではInternetExploerの「保護モード」の設定を、セキュリティ設定の各ゾーンで同一に
+する必要があるという仕様があるため、保護モードの設定を必要に応じて変更します。
 
-例えば、開発者の端末はWindowsであり、継続的インテグレーション(CI)のサーバー上では
+Edgeでは`MicrosoftWebDriver.exe`へのパスをシステムプロパティー`webdriver.edge.driver`に設定します。
+
+※IEとEdgeのタイムアウトの話
+
+また、開発者の端末はWindowsであり、継続的インテグレーション(CI)のサーバー上では
 Linuxで実行されるように、複数の端末上でテストが実行される場合、スクリプト内で実行
 されるOSの判定を行い、適切な設定を行います。
 
 OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.condition.Os`で、
 `GebConfig.groovy`内ではサードパーティーのライブラリーであるCommons Langの`org.apache.commons.lang.SystemUtils`を用いて行います。
-
-### Edge
-
 
 
 ※いきなりクロスブラウザーはおすすめしない
@@ -239,11 +242,32 @@ OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.
 できます。これを使用した`GebConfig.groovy`の記述のサンプルは以下の通りと
 なります。
 
-## WebDriverでは
-
 ## レポーティング
 
+```
+    testCompile 'org.slf4j:slf4j-api:1.7.13'
+    testCompile 'org.slf4j:slf4j-simple:1.7.13'
+    testCompile ("org.gebish:geb-spock:$gebVersion") {
+        exclude group: "org.spockframework"
+    }
+    testCompile (group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4') {
+        exclude group: "org.codehaus.groovy"
+    }
+
+```
+
 ## スクリーンショット取得時の注意点
+
+Gebでは`geb.spock.GebReportingSpec`を継承することで、テストの実行時に
+自動でスクリーンショットを取得することができます。
+
+この際、スクリーンショットのファイル名はFeature Methodの名称に従って作成
+されますが、Spockの場合はJavaで扱うことのできる文字列であればメソッドの
+名称に制約がないので、実行するOSのファイルシステムで扱うことのできない
+文字はテストを実行する側でエスケープする必要があります。
+
+文字列をエスケープするには、`GebConfig.groovy`に以下の通りの
+記述を追加します。
 
 ```
 reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter() {
@@ -253,8 +277,6 @@ reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporte
     }
 })
 ```
-
-## 録画
 
 ## テスト自動化ピラミッド
 
