@@ -1,7 +1,7 @@
-docker build -t tf2 .
-docker run tf2
+docker build -t tf3 .
+docker run tf3
 
-$out = docker ps -a |Select-String "tf2"
+$out = docker ps -a |Select-String "tf3"
 foreach ($line in $out){
   $ids = $line.line -split " "
   $id = ${ids}[0]

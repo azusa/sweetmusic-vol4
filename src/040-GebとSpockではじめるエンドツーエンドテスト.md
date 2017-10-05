@@ -7,7 +7,7 @@
 本稿では、Groovyを使用したSelenium WebDriver拡張のブラウザー自動化ツールであるGebと、
 同じくGroovyを用いるSpockを使用した、エンドツーエンドのテストについて述べます。
 
-## アジャイルテストの四象限
+## アジャイルテストの四象限とエンドツーエンドテスト
 
 自動化されたユニットテストに代表される、開発者によるプログラムに対して行なうテスト以外にも、
 ソフトウェアテストには複数の軸と象限が存在します。
@@ -20,7 +20,7 @@ Lisa Crispin氏とJanet Gregory氏は「Agile Testing」[@Crispin2009]^[邦訳�
 分類して、「アジャイルテストの四象限」としています。
 
 Gregory氏とCrispin氏は更にその後、「More Agile Testing」[@Gregory2015]の中でMichael Hüttermann氏
-の議論[@Huttermann2011]を取り込む形で、「アジャイルテストの四象限」について稿を改めています。 [@fig:030_a_image]
+の議論[@Huttermann2011]を取り込む形で、「アジャイルテストの四象限」について稿を改めています。 
 
 Hüttermann氏は、アジャイル開発の中で、テストを通じてステークホルダーが協調するポイントとして、
 以下の3つのポイントをあげています。
@@ -29,18 +29,22 @@ Hüttermann氏は、アジャイル開発の中で、テストを通じてステ
 - Barrier-free
 - Collaborative
 
+一つ目の「Outside-in」は、アプリケーションの望ましい振る舞いを規定するビジネス要求から、トップダウンでソフトウェア開発に切り込んでいくことを示しています。
+
+二つ目の「Barrier-free」は、ここまで述べてきたBDDスタイルの開発によって、ビジネス面からテクノロジーによった側面まで、シームレスにテストによって開発が駆動されることを示しています。
+
+三つ目の「Collabrative」は、多様なステークホルダーがユビキタス言語として記述されたシナリオを通じて、ソフトウェア開発の中で協調することを示しています。
+
 「More Agile Testing」では、この視野を取り込んだ上で、四象限の中での「チームを支援するテスト」という
 軸を、「開発の手引きとなるテスト」と改めています。
 
-![アジャイルテストの四象限](src/img/agiletesting.png){#fig:030_a_image}
+![アジャイルテストの四象限](src/img/agiletesting-2.png){#fig:040_a_image}
 
-本稿では、[@fig:030_a_image]の中で、主に左上の象限に位置する、開発プロセスに於いてビジネス面の
+本稿では、[@fig:040_a_image]の中で、主に左上の象限に位置する、開発プロセスに於いてビジネス面の
 テストの自動化についてフォーカスします。
 その上で、プログラミング言語Apache Groovy ^[以下Groovy] ^[[http://groovy-lang.org/](http://groovy-lang.org/)]によって記述されたブラウザー自動化ツールであるGebと、
 同じくGroovyによって記述されたテスティングフレームワークである
 Spockによるエンドツーエンドの手法について述べます。
-
-## エンドツーエンドテスト
 
 「xUnit」と総称されるテスティングフレームワークによって書かれてるテストは、
 システムの最小構成単位であるメソッドや関数に対してのテストを最も小さい粒度としています。
@@ -53,15 +57,13 @@ Spockによるエンドツーエンドの手法について述べます。
 Webブラウザー操作自動化APIであるSelenium WebDriverを使用して、
 Webブラウザー上でのユーザーの操作に対してテストを行います。
 
-## Geb
+## GebとSpockによるエンドツーエンドテスト
 
 Gebは、Luke Daley氏、Marcin Erdmann氏、Chris Prior氏が中心となって開発を進めている
 オープンソースソフトウェアで、[http://gebish.org/](http://gebish.org/)で公開されています。
 ライセンスはApache License Version 2.0です。
 Gebは、Groovyの言語機能を生かした簡潔な記述と、
 jQueryライクなDOMへアクセスするための式言語が特徴となっています。
-
-## GebとSpockによるエンドツーエンドテスト
 
 Geb自体はその実装にテスティングフレームワークを含んでおらず、任意のテスティングフレームワークと
 組み合わせて使えるようになっています。Gebのドキュメント^[[http://www.gebish.org/manual/current/](http://www.gebish.org/manual/current/)]では、組み合わせの例としてSpock,JUnit,
@@ -88,9 +90,9 @@ BDDスタイルでシナリオを記述することがエンドツーエンド�
 Gebのページオブジェクトでは`geb.page.Page`クラスを継承して
 ページオブジェクトを記述します。その際にstaticな`at`クロージャーの
 中に、ページが含むべきDOMの要素の条件を記述することで、
-テスト内の画面遷移が正しいかを検証します。
+テスト内の画面遷移が正しいかを検証します。[@lst:040_code1] 
 
-```
+```{#lst:040_code1 caption="ページオブジェクト"}
 class GebishOrgHomePage extends Page {
 
     static at = { title == "Geb - Very Groovy Browser Automation" }
@@ -101,7 +103,7 @@ class GebishOrgHomePage extends Page {
 }
 ```
 
-## ページオブジェクト上でのDOM要素の特定について
+### ページオブジェクト上でのDOM要素の特定について
 
 Selenium WebDriverによってテストを記述する上でのセオリーとして、テストが
 記述するDOM上の要素に一意になるhtmlの`id`要素を振って、テストからDOMを
@@ -111,12 +113,14 @@ Selenium WebDriverによってテストを記述する上でのセオリーと�
 `id`要素を一意にするにはアプリケーション全体で`id`要素を一意にする必要があるという
 問題がありました。
 
-さらに近年のトレンドであるコンポーネント指向では、htmlとコンポーネント間の
-マッピングに`id`を使用する場合があるため、この点でもエンドツーエンドのテストの
-DOM要素のマッピングに`id`を使用することは嫌忌されつつあります。
+さらにWebアプリケーションのUIがリッチになる中でアプリケーションが動的に
+DOMを生成することがありふれるものとなると、html内にhtmlの
+要素として`id`を記述すること自体がアプリケーションの開発スタイルと
+そぐわないものになってきました。
 
-このため、Gebによるエンドツーエンドのテストでページオブジェクトを使用する場合は、
-ページオブジェクトのプロパティ上で、要素を特定するDOMのパスを記述し、
+このため、Gebによるエンドツーエンドのテストでページオブジェクトを
+使用する場合は、
+ページオブジェクトのプロパティ上で、この次に述べる`$`を使用したjQueryライクのまっチャーを使用してDOMの要素を特定し、
 テストからはページオブジェクトのプロパティ経由でDOMにアクセスすることで
 テストからDOMの要素を隠蔽するという手順を踏みます。
 
@@ -156,6 +160,15 @@ to GebishOrgHomePage
 
 ## 非同期処理
 
+Gebでは非同期処理の記述を行うには、要素の出現判定する処理のブロックを `waitFor{ 条件 }`で囲みます。タイムアウトは`GebConfig.groovy`の`waiting`ブロックのクロージャーで`timeout`プロパティーを設定します。
+
+また、ページオブジェクトを使用している場合は、
+
+` toggle(wait:true) { $("div.menu a.manuals") }`
+
+のようにコンテントに`wait:true`を指定することで、ページオブジェクトを
+操作する際に要素の出現を待機することが出来るようになります。[@PoohSunny2014]
+
 ## 設定の切り替え
 
 Gebでは、クラスパス上の`GebConfig.groovy`上にテストを実行する上での
@@ -194,13 +207,15 @@ environments {
 
 ```
 
-上記の例では、`build.gradle`内で`geb.env`にドライバーの種別を指定していますGebでは、
-使用するWebDriverを指定するのに、`GebConfig.groovy`内の`driver`という変数に
+上記の例では、`build.gradle`内で`geb.env`にドライバーの種別を指定しています。
+
+Gebでは、
+使用するWebDriverを指定する上で`GebConfig.groovy`内の`driver`という変数に
 
 - WebDriverの実装クラス名を指す文字列
 - WebDriverのインスタンスを返すクロージャー
 
-のどちらか示すという仕様があるため^[[http://www.gebish.org/manual/current/#driver-class-name](http://www.gebish.org/manual/current/#driver-class-name)]、それぞれのブロック内でその処理を行っています。
+のどちらか示すという仕様があり^[[http://www.gebish.org/manual/current/#driver-class-name](http://www.gebish.org/manual/current/#driver-class-name)]、それぞれのブロック内でその処理を行っています。
 
 Gebの`geb-example-gradle`等では、システムプロパティー`geb.env`を使用するブラウザーの
 切り替えに使用していますが、例えば開発環境とステージング環境等の複数環境でGebによる
@@ -257,13 +272,13 @@ Firefoxでは`geckodriver.exe`ないし`geckodriver`への絶対パスをシス�
 
 Internet Exploer 11(IE11)では`IEDriverServer.exe`への絶対パスをシステムプロパティー
 `webdriver.ie.driver`で指定します。また、`InternetExplorerDriver`ではInternetExploerの「保護モード」の設定を、セキュリティ設定の各ゾーンで同一に
-する必要があるという仕様があるため、保護モードの設定を必要に応じて変更します。
+する必要があるという仕様があるため、保護モードの設定を必要に応じて変更します。[@fig:040_c_image]
+
+![IE11の保護モードの設定](src/img/ie.png){#fig:040_ｃ_image}
 
 ### Edge
 
 Edgeでは`MicrosoftWebDriver.exe`へのパスをシステムプロパティー`webdriver.edge.driver`に設定します。
-
-※IEとEdgeのタイムアウトの話
 
 また、開発者の端末はWindowsであり、継続的インテグレーション(CI)のサーバー上では
 Linuxで実行されるように、複数の端末上でテストが実行される場合、スクリプト内で実行
@@ -272,8 +287,21 @@ Linuxで実行されるように、複数の端末上でテストが実行され
 OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.condition.Os`で行います。
 `GebConfig.groovy`内で判定を行う場合はサードパーティーのライブラリーであるCommons Langの`org.apache.commons.lang.SystemUtils`を用いて行います。
 
+テスト実行のプロファイル事にDriverの実装を切り替えることにより、単一の
+アプリケーションに対してクロスブラウザーでのエンドツーエンドのテストを
+行うことが可能です。
+ですが、InternetExploerやEdgeのDriver実装は、非同期処理を伴わない
+画面遷移であっても、`GebConfig.groovy`の`waiting`ブロックによる
+タイムアウトの設定を長めにとらないとDOMの要素を適切に取得できないなどの
+問題があり、このようなテスト実行の上で考慮すべき問題はブラウザーごとに
+存在します。
 
-※いきなりクロスブラウザーはおすすめしない
+UIの単体テストでなく、アプリケーションのシナリオを通じてユースケースを
+実現しているかの受け入れてとしてエンドツーエンドのテストを行うのであれば、
+アプリケーションが動作対象とするブラウザーの中からエンドツーエンドの
+テストの対象とするブラウザーをピックアップすることが望ましいです。
+そのテスト運用が安定してから、さらなる品質向上を目指してクロスブラウザー
+でのエンドツーエンドのテストに取り組むのが良いでしょう。
 
 ## マルチステージ
 
@@ -285,7 +313,10 @@ OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.
 ## レポーティング
 
 SpockではRenato Athaydes氏が開発しているspock-reports^[[https://github.com/renatoathaydes/spock-reports](https://github.com/renatoathaydes/spock-reports)]という拡張を
-使用することにより、BDDに即した形でのレポート表示を行うことが可能です。
+使用することにより、BDDに即した形でのレポート表示を行うことが可能です。[@fig:040_b_image]
+
+![spock-reportsによるレポート表示](src/img/spock-report.png){#fig:040_b_image}
+
 
 SpockでGebのテストを記述する際、Featur Method内の`given`-`when`-`then`内に
 文字列でシナリオを記述することにより、レポートで見た際にテストが
@@ -314,7 +345,7 @@ SpockでGebのテストを記述する際、Featur Method内の`given`-`when`-`t
 Gebでspock-reportsを使用するには、build.gradleで`com.athaydes:spock-repots`を依存性に追加します。
 
 この際、Gebが依存するSpockのバージョンが`1.0-groovy-2.4`であり、
-spock-reportsが依存するのは`1.1-groovy-.2.4`であるため、
+spock-reportsが依存するのは`1.1-groovy-2.4`であるため、
 上記を共存させるための`build.gradle`は次の通りとなります。
 
 ```
@@ -353,16 +384,9 @@ reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporte
     }
 })
 ```
-
-## テスト自動化ピラミッド
-
-## Webアプリケーションにおけるエンドツーエンドテストの役割
-
-Gebをフロントエンドの単体テストに使うのであれば、テストスイートは分けましょうね
-
 ## Gebのリソース
 
-Gebは公式の英語によるドキュメントが充実しており、Gebを活用するにあたっては
+Gebは公式の英語によるドキュメント^[[http://www.gebish.org/manual/current/](http://www.gebish.org/manual/current/))]が充実しており、Gebを活用するにあたっては
 まずこちらを参照するとよいでしょう。
 
 日本語のリソースとしては、WEB+DB PRESS VOL.85の「GebによるスマートなE2Eテスト」[@Sato2015]が
