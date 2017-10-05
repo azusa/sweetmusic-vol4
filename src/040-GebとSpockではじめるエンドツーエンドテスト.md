@@ -72,7 +72,26 @@ TestNGおよびCucumber-JVMが示されています。
 本稿では、例示に使うテスティングフレームワークとしてSpockを使用します。
 SpockとGebが同じGroovyで記述されていることによる親和性の高さや、
 BDDスタイルでシナリオを記述することがエンドツーエンドのテストの
-シナリオを記述する上で使い勝手がよいためです。
+シナリオを記述する上で使い勝手がよいためです。[@lst:040_code2]
+
+```{#lst:040_code2 caption="Spockによる記述"}
+    def "Book of Gebの現行バージョンが表示できる"() {
+        when: "Gebのホームページを表示する"
+        to GebishOrgHomePage
+
+        and: "マニュアルのメニューを開く"
+        manualsMenu.open()
+
+        then: "currentのリンクがcurrentではじまっている"
+        manualsMenu.links[0].text().startsWith("current")
+
+        when: "リンクをクリックする"
+        manualsMenu.links[0].click()
+
+        then: "The Book Of Gebのページが表示される"
+        at TheBookOfGebPage
+    }
+```
 
 ## ページオブジェクト
 
@@ -274,7 +293,7 @@ Internet Exploer 11(IE11)では`IEDriverServer.exe`への絶対パスをシス�
 `webdriver.ie.driver`で指定します。また、`InternetExplorerDriver`ではInternetExploerの「保護モード」の設定を、セキュリティ設定の各ゾーンで同一に
 する必要があるという仕様があるため、保護モードの設定を必要に応じて変更します。[@fig:040_c_image]
 
-![IE11の保護モードの設定](src/img/ie.png){#fig:040_ｃ_image}
+![IE11の保護モードの設定](src/img/ie.png){#fig:040_c_image}
 
 ### Edge
 
@@ -323,23 +342,8 @@ SpockでGebのテストを記述する際、Featur Method内の`given`-`when`-`t
 行っていることをわかりやすく記述させることができます。
 
 ```
-    def "can get to the current Book of Geb"() {
-        when: "Gebのホームページを表示する"
-        to GebishOrgHomePage
-
-        and: "マニュアルのメニューを開く"
-        manualsMenu.open()
-
-        then: "currentのリンクがcurrentではじまっている"
-        manualsMenu.links[0].text().startsWith("current")
-
-        when: "リンクをクリックする"
-        manualsMenu.links[0].click()
-
-        then: "The Book Of Gebのページが表示される"
-        at TheBookOfGebPage
-    }
-
+    then: "currentのリンクがcurrentではじまっている"
+    manualsMenu.links[0].text().startsWith("current")
 ```
 
 Gebでspock-reportsを使用するには、build.gradleで`com.athaydes:spock-repots`を依存性に追加します。
@@ -349,7 +353,8 @@ spock-reportsが依存するのは`1.1-groovy-2.4`であるため、
 上記を共存させるための`build.gradle`は次の通りとなります。
 
 ```
-    testCompile (group: 'com.athaydes', name: 'spock-reports', version: '1.3.2'){
+    testCompile (group: 'com.athaydes', name: 'spock-reports',
+     version: '1.3.2'){
         transitive = false
     }
     testCompile 'org.slf4j:slf4j-api:1.7.13'
@@ -357,7 +362,8 @@ spock-reportsが依存するのは`1.1-groovy-2.4`であるため、
     testCompile ("org.gebish:geb-spock:$gebVersion") {
         exclude group: "org.spockframework"
     }
-    testCompile (group: 'org.spockframework', name: 'spock-core', version: '1.1-groovy-2.4') {
+    testCompile (group: 'org.spockframework', 
+    name: 'spock-core', version: '1.1-groovy-2.4') {
         exclude group: "org.codehaus.groovy"
     }
 
@@ -377,7 +383,8 @@ Gebでは`geb.spock.GebReportingSpec`を継承することで、テストの実�
 記述を追加します。
 
 ```
-reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporter() {
+reporter = new CompositeReporter(new PageSourceReporter(),
+ new ScreenshotReporter() {
     @Override
     protected escapeFileName(String name) {
         name.replaceAll(/^[\\\/:\*?"<>\|\s]+$/, "_")
@@ -389,9 +396,25 @@ reporter = new CompositeReporter(new PageSourceReporter(), new ScreenshotReporte
 Gebは公式の英語によるドキュメント^[[http://www.gebish.org/manual/current/](http://www.gebish.org/manual/current/))]が充実しており、Gebを活用するにあたっては
 まずこちらを参照するとよいでしょう。
 
-日本語のリソースとしては、WEB+DB PRESS VOL.85の「GebによるスマートなE2Eテスト」[@Sato2015]が
-あげられます。また2016年12月に開かれた「Geb Advent Calendar 2016」^[[https://qiita.com/advent-calendar/2016/geb](https://qiita.com/advent-calendar/2016/geb)] にも日本語でのGebに関するエントリーが集積されています。
+またGebのソースコード^[[https://github.com/geb/geb](https://github.com/geb/geb)]は
+Groovyのソースコードリーディングの題材として優れているので、
+GebのAPI呼び出しからメタプログラミングやAST変換がどのように動いているのか
+興味をお持ちでしたらソースコードを眺めてみるのもよいでしょう。
 
-- Gebのソースコード読みやすいし
-- コミュニティーも親切だしhttps://youtu.be/yKFHmLYCfn0?t=2m9s
+日本語のリソースとしては、WEB+DB PRESS VOL.85の「GebによるスマートなE2Eテスト」[@Sato2015]が
+あげられます。
+
+また2016年12月に開かれた「Geb Advent Calendar 2016」^[[https://qiita.com/advent-calendar/2016/geb](https://qiita.com/advent-calendar/2016/geb)] にも日本語でのGebに関するエントリーが集積されています。
+
+Gebのメイン開発者であるMarcin Erdmann氏はカンファレンスに登壇した際に
+GebのContributorを全員紹介するなど^[筆者はGebのContributorです。] ^[[https://youtu.be/yKFHmLYCfn0?t=2m9s](https://youtu.be/yKFHmLYCfn0?t=2m9s)]] 気さくな性格であり、Gebのコミュニティーはプルリクエストなどの要望にも丁寧に対応してくれます。
+
+GebによるエンドツーエンドのテストはSpockと組み合わせることで、
+BDDスタイルのテスト記述やレポート出力など、上位のテストレベルと
+してのエンドツーエンドテストに求められる機能を備えることができます。
+
+また、GebとSpockの組み合わせにより、GroovyのJavaライクな軽量の
+スクリプト記述を生かすことができます。本稿がみなさんの
+Gebによるテスト記述のきっかけになれば幸いです。
+
 
