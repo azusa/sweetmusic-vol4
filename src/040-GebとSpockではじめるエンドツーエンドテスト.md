@@ -15,11 +15,11 @@
 システムの完成度を高めるための探索的テストなど、前章で述べたようなシステムの受け入れ要件を
 確認するためのテストなどです。
 
-Lisa Crisping氏とJanet Gregory氏は「Agile Testing」[@Crispin2009]^[邦訳「実践アジャイルテスト」]の中で、
+Lisa Crispin氏とJanet Gregory氏は「Agile Testing」[@Crispin2009]^[邦訳「実践アジャイルテスト」]の中で、
 その軸を「チームを支援するテストと、製品を評価するテスト」「ビジネス面のテストと、技術面のテスト」に
 分類して、「アジャイルテストの四象限」としています。
 
-Gregory氏とCrisping氏は更にその後、「More Agile Testing」[@Gregory2015]の中でMichael Hüttermann氏
+Gregory氏とCrispin氏は更にその後、「More Agile Testing」[@Gregory2015]の中でMichael Hüttermann氏
 の議論[@Huttermann2011]を取り込む形で、「アジャイルテストの四象限」について稿を改めています。 [@fig:030_a_image]
 
 Hüttermann氏は、アジャイル開発の中で、テストを通じてステークホルダーが協調するポイントとして、
@@ -36,7 +36,7 @@ Hüttermann氏は、アジャイル開発の中で、テストを通じてステ
 
 本稿では、[@fig:030_a_image]の中で、主に左上の象限に位置する、開発プロセスに於いてビジネス面の
 テストの自動化についてフォーカスします。
-その上で、プログラミング言語Apache Groovy ^[以下Groovy]^[[http://groovy-lang.org/](http://groovy-lang.org/)]によって記述されたブラウザー自動化ツールであるGebと、
+その上で、プログラミング言語Apache Groovy ^[以下Groovy] ^[[http://groovy-lang.org/](http://groovy-lang.org/)]によって記述されたブラウザー自動化ツールであるGebと、
 同じくGroovyによって記述されたテスティングフレームワークである
 Spockによるエンドツーエンドの手法について述べます。
 
@@ -85,6 +85,21 @@ BDDスタイルでシナリオを記述することがエンドツーエンド�
 - 一つのページ全体を(一つの)ページオブジェクトで表す必要は無い
 - 同じ操作が異なる結果となる場合は、異なるメソッドとしてモデル化する
 
+Gebのページオブジェクトでは`geb.page.Page`クラスを継承して
+ページオブジェクトを記述します。その際にstaticな`at`クロージャーの
+中に、ページが含むべきDOMの要素の条件を記述することで、
+テスト内の画面遷移が正しいかを検証します。
+
+```
+class GebishOrgHomePage extends Page {
+
+    static at = { title == "Geb - Very Groovy Browser Automation" }
+
+    static content = {
+        manualsMenu { module(ManualsMenuModule) }
+    }
+}
+```
 
 ## ページオブジェクト上でのDOM要素の特定について
 
@@ -123,7 +138,9 @@ $("h1", 2, class: "heading")
  ```
 
 この`$`というメソッドが返すオブジェクトははGroovyのシンタックスとしては、
-GroovyのmethodMissingという仕組みを使って`geb.Browser`クラス^[[https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy](https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy)]を経由して呼び出される`geb.navigator.Navigator`^[[http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html](http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html)]クラスのオブジェクトです。
+GroovyのmethodMissingという仕組みを使って
+`geb.Browser`クラス ^[[https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy](https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy)]
+を経由して呼び出される`geb.navigator.Navigator` ^[[http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html](http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html)]クラスのオブジェクトです。
 
 また、Gebのテストケース内ではこのmethodMissingの仕組みを使って、
 
@@ -204,22 +221,45 @@ Gradleでは`gradle.properties`ないしコマンド実行時の`-P`オプショ
 
 WebDriverはW3CでDriverのインターフェースと仕様が規定されており^[[https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebDriver.html](https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebDriver.html)]、
 
-それに対して、各ブラウザーがDriverの実装を提供するという枠組みになっています。
+それに対して、各ブラウザーの開発元がDriverの実装を提供するという枠組みになっています。
 `geb-example-gradle`ではChromeとFirefoxでの実装を指定する例が提供されて
 います。
 
 この際、ブラウザーによってはブラウザーとの間とのブリッジとなるネイティブランタイムを
 配置する必要があります。その場合、ランタイムのパスはWebDriverの指定とは別のシステムプロパティーで指定します。
 
+### Chrome
+
 Chromeでは`chromedriver.exe`ないし`chromedriver`への絶対パスをシステムプロパティー
 `webdriver.chrome.driver`で
 指定します。
 
+### Headless Chrome
+
+Chrome59より実装されたヘッドレス機能を使用するには、`GebConfig.groovy`のdriverを指定するクロージャー内で
+`org.openqa.selenium.chrome.ChromeOptions`に`headless`オプションを指定します。
+
+```
+	chromeHeadless {
+		driver = {
+			ChromeOptions o = new ChromeOptions()
+			o.addArguments('headless')
+			new ChromeDriver(o)
+		}
+	}
+```	
+
+### Firefox
+
 Firefoxでは`geckodriver.exe`ないし`geckodriver`への絶対パスをシステムプロパティー`webdriver.gecko.driver`で指定します。
+
+### Internet Exploer(IE)
 
 Internet Exploer 11(IE11)では`IEDriverServer.exe`への絶対パスをシステムプロパティー
 `webdriver.ie.driver`で指定します。また、`InternetExplorerDriver`ではInternetExploerの「保護モード」の設定を、セキュリティ設定の各ゾーンで同一に
 する必要があるという仕様があるため、保護モードの設定を必要に応じて変更します。
+
+### Edge
 
 Edgeでは`MicrosoftWebDriver.exe`へのパスをシステムプロパティー`webdriver.edge.driver`に設定します。
 
@@ -229,8 +269,8 @@ Edgeでは`MicrosoftWebDriver.exe`へのパスをシステムプロパティー`
 Linuxで実行されるように、複数の端末上でテストが実行される場合、スクリプト内で実行
 されるOSの判定を行い、適切な設定を行います。
 
-OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.condition.Os`で、
-`GebConfig.groovy`内ではサードパーティーのライブラリーであるCommons Langの`org.apache.commons.lang.SystemUtils`を用いて行います。
+OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.condition.Os`で行います。
+`GebConfig.groovy`内で判定を行う場合はサードパーティーのライブラリーであるCommons Langの`org.apache.commons.lang.SystemUtils`を用いて行います。
 
 
 ※いきなりクロスブラウザーはおすすめしない
@@ -244,7 +284,43 @@ OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.
 
 ## レポーティング
 
+SpockではRenato Athaydes氏が開発しているspock-reports^[[https://github.com/renatoathaydes/spock-reports](https://github.com/renatoathaydes/spock-reports)]という拡張を
+使用することにより、BDDに即した形でのレポート表示を行うことが可能です。
+
+SpockでGebのテストを記述する際、Featur Method内の`given`-`when`-`then`内に
+文字列でシナリオを記述することにより、レポートで見た際にテストが
+行っていることをわかりやすく記述させることができます。
+
 ```
+    def "can get to the current Book of Geb"() {
+        when: "Gebのホームページを表示する"
+        to GebishOrgHomePage
+
+        and: "マニュアルのメニューを開く"
+        manualsMenu.open()
+
+        then: "currentのリンクがcurrentではじまっている"
+        manualsMenu.links[0].text().startsWith("current")
+
+        when: "リンクをクリックする"
+        manualsMenu.links[0].click()
+
+        then: "The Book Of Gebのページが表示される"
+        at TheBookOfGebPage
+    }
+
+```
+
+Gebでspock-reportsを使用するには、build.gradleで`com.athaydes:spock-repots`を依存性に追加します。
+
+この際、Gebが依存するSpockのバージョンが`1.0-groovy-2.4`であり、
+spock-reportsが依存するのは`1.1-groovy-.2.4`であるため、
+上記を共存させるための`build.gradle`は次の通りとなります。
+
+```
+    testCompile (group: 'com.athaydes', name: 'spock-reports', version: '1.3.2'){
+        transitive = false
+    }
     testCompile 'org.slf4j:slf4j-api:1.7.13'
     testCompile 'org.slf4j:slf4j-simple:1.7.13'
     testCompile ("org.gebish:geb-spock:$gebVersion") {
