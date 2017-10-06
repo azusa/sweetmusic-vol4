@@ -21,7 +21,7 @@ Patrick Debois氏による「Agile Infrastructure and Operations」^[[http://www
 ](https://conferences.oreilly.com/velocity/velocity2009
 )]に
 FlickrのエンジニアであるJohn Allspaw氏, Paul Hammond氏が「10+ Deploys per Day: Dev and Ops Cooperation at Flickr」[@Allspaw2009]^[[https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr](https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr)]という発表を行います。
-このこのプレゼンテーションをベルギーからストリーミングで視聴していたPatrick Debois氏が、
+このプレゼンテーションをベルギーからストリーミングで視聴していたPatrick Debois氏が、
 「Devopsdays」というイベントを開く事を思い立ち、それが本格的なDevOpsムーブメントの始まりと
 なったとされています。[@Edwards2012] ^[[http://itrevolution.com/the-history-of-devops/](http://itrevolution.com/the-history-of-devops/)] ここに至るまでの流れは@marubinotto氏 ^[[https://twitter.com/marubinotto](https://twitter.com/marubinotto)] によって「DevOpsの起源とOpsを巡る対立」 ^[[https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/](https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/)] としてまとめられています。
 
@@ -35,7 +35,7 @@ FlickrのエンジニアであるJohn Allspaw氏, Paul Hammond氏が「10+ Deplo
 
 また筆者が若手エンジニアだったころのソフトウェア運用の現場というのは、定められた運用スケジュールに従って
 ジョブスケジューラーを起動し、バッチプログラムの実行結果を確認したり、業務部署に帳票を
-配布するための専任のオペレーターが勤務しているのが常でした。
+配布したりするための専任のオペレーターが勤務しているのが常でした。
 
 そのため、インフラ構築やシステム運用のプロセスは、機器のセットアップや、定常業務の運用など、プロセス中に
 人間が行う作業が介在することを前提とし、それを最適化する方向で発展してきました。
@@ -184,7 +184,7 @@ Opsが保守的であることに端を発するものではありません。
 
 ITサービス運営におけるアーキテクチャーを考える上で、「SoE」「SoR」という概念が近年広く使われるように
 なっています。これは「キャズム」の著者、ジェフェリー・ムーア氏が2011年に発表したホワイトペーパー、
-「Systems of Engagement and The Futute of Enterprise IT」によって広まった概念です。
+「Systems of Engagement and The Future of Enterprise IT」によって広まった概念です。
 
 SoRとは「System of Record」の頭文字をとったもので、在庫管理から顧客への注文処理など、企業内での経済活動の結果としての様々な情報を記録し、処理することを目的としたシステムです。
 
@@ -244,7 +244,7 @@ SoRは要件が確定しており変更も頻繁でないため、ウォータ�
 もともとこれは、スタートアップに代表されるような比較的短期間の開発の中で、素早く
 サービスをローンチして、投資の回収を可能にすることに最適化したスキームです。
 
-もちろんSRE(Site Reliability Engeneering)に代表されるように、これまでプロセスの
+もちろんSRE(Site Reliability Engineering)に代表されるように、これまでプロセスの
 中に人間が介在することを前提としてきたサービス運用の現場にソフトウェアエンジニアリングの
 アプローチを導入していく流れは止められないものとなっています。
 
@@ -280,7 +280,7 @@ DevOpsというものが語られるようになっても続いているわけ�
 ## まとめ
 
 アジャイル開発の考えを、インフラやシステム運用に適用範囲を広げていくという発想で、
-DevOpsという考えは生まれ来てました。そのDevOpsを実現するために、チーム内で必要な技術
+DevOpsという考えは生まれ来ました。そのDevOpsを実現するために、チーム内で必要な技術
 スタックをどう保持するかという問題意識の元、一つのチームが受け持つシステムの範囲を限定し、
 お互いのシステムの結合を疎にするための方法論としてマイクロサービスアーキテクチャーは存在します。
 

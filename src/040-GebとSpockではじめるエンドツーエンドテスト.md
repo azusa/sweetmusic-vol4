@@ -46,7 +46,7 @@ Hüttermann氏は、アジャイル開発の中で、テストを通じてステ
 同じくGroovyによって記述されたテスティングフレームワークである
 Spockによるエンドツーエンドの手法について述べます。
 
-「xUnit」と総称されるテスティングフレームワークによって書かれてるテストは、
+「xUnit」と総称されるテスティングフレームワークによって書かれるテストは、
 システムの最小構成単位であるメソッドや関数に対してのテストを最も小さい粒度としています。
 テストの粒度を大きい範囲にすることもできますが、
 メソッドや関数の集合体としてのAPIのエンドポイントを単体にないし複数回シナリオとして呼び出すのが
@@ -139,13 +139,13 @@ DOMを生成することがありふれるものとなると、html内にhtmlの
 
 このため、Gebによるエンドツーエンドのテストでページオブジェクトを
 使用する場合は、
-ページオブジェクトのプロパティ上で、この次に述べる`$`を使用したjQueryライクのまっチャーを使用してDOMの要素を特定し、
-テストからはページオブジェクトのプロパティ経由でDOMにアクセスすることで
+ページオブジェクトのプロパティー上で、この次に述べる`$`を使用したjQueryライクのまっチャーを使用してDOMの要素を特定し、
+テストからはページオブジェクトのプロパティー経由でDOMにアクセスすることで
 テストからDOMの要素を隠蔽するという手順を踏みます。
 
 ## $関数
 
-Gebでは、テスト内でWebDriverwを通じてブラウザーの要素にアクセスするにあたって、
+Gebでは、テスト内でWebDriverを通じてブラウザーの要素にアクセスするにあたって、
 jQueryに類似した`$`というメソッドを起点としてオブジェクトを取得します。
 
 `$`メソッドはGebのテストケース内で以下のようなシグネチャを伴って呼び出します。
@@ -160,7 +160,7 @@ $(cssセレクター, インデックスまたは範囲, 属性または文字�
 $("h1", 2, class: "heading")
  ```
 
-この`$`というメソッドが返すオブジェクトははGroovyのシンタックスとしては、
+この`$`というメソッドが返すオブジェクトはGroovyのシンタックスとしては、
 GroovyのmethodMissingという仕組みを使って
 `geb.Browser`クラス ^[[https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy](https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy)]
 を経由して呼び出される`geb.navigator.Navigator` ^[[http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html](http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html)]クラスのオブジェクトです。
@@ -287,10 +287,10 @@ Chrome59より実装されたヘッドレス機能を使用するには、`GebCo
 
 Firefoxでは`geckodriver.exe`ないし`geckodriver`への絶対パスをシステムプロパティー`webdriver.gecko.driver`で指定します。
 
-### Internet Exploer(IE)
+### Internet Explorer(IE)
 
-Internet Exploer 11(IE11)では`IEDriverServer.exe`への絶対パスをシステムプロパティー
-`webdriver.ie.driver`で指定します。また、`InternetExplorerDriver`ではInternetExploerの「保護モード」の設定を、セキュリティ設定の各ゾーンで同一に
+Internet Explorer 11(IE11)では`IEDriverServer.exe`への絶対パスをシステムプロパティー
+`webdriver.ie.driver`で指定します。また、`InternetExplorerDriver`ではInternetExploerの「保護モード」の設定を、セキュリティー設定の各ゾーンで同一に
 する必要があるという仕様があるため、保護モードの設定を必要に応じて変更します。[@fig:040_c_image]
 
 ![IE11の保護モードの設定](src/img/ie.png){#fig:040_c_image}
@@ -337,7 +337,7 @@ SpockではRenato Athaydes氏が開発しているspock-reports^[[https://github
 ![spock-reportsによるレポート表示](src/img/spock-report.png){#fig:040_b_image}
 
 
-SpockでGebのテストを記述する際、Featur Method内の`given`-`when`-`then`内に
+SpockでGebのテストを記述する際、Feature Method内の`given`-`when`-`then`内に
 文字列でシナリオを記述することにより、レポートで見た際にテストが
 行っていることをわかりやすく記述させることができます。
 
@@ -401,13 +401,14 @@ Groovyのソースコードリーディングの題材として優れている�
 GebのAPI呼び出しからメタプログラミングやAST変換がどのように動いているのか
 興味をお持ちでしたらソースコードを眺めてみるのもよいでしょう。
 
-日本語のリソースとしては、WEB+DB PRESS VOL.85の「GebによるスマートなE2Eテスト」[@Sato2015]が
-あげられます。
+日本語のリソースとしては、「Selenium実践入門」[@Ito2016]が中で一章を割いてGebについて記述しています。WEB+DB PRESS VOL.85の「GebによるスマートなE2Eテスト」[@Sato2015]もGebについて触れています。
+
+Web上のリソースとしては、「Groovy製のSeleniumラッパーライブラリ「Geb」で、可読性の高いテストを書いてみよう」^[[https://codezine.jp/article/detail/10456](https://codezine.jp/article/detail/10456)] [@Takahashi2017] があります。
 
 また2016年12月に開かれた「Geb Advent Calendar 2016」^[[https://qiita.com/advent-calendar/2016/geb](https://qiita.com/advent-calendar/2016/geb)] にも日本語でのGebに関するエントリーが集積されています。
 
 Gebのメイン開発者であるMarcin Erdmann氏はカンファレンスに登壇した際に
-GebのContributorを全員紹介するなど^[筆者はGebのContributorです。] ^[[https://youtu.be/yKFHmLYCfn0?t=2m9s](https://youtu.be/yKFHmLYCfn0?t=2m9s)]] 気さくな性格であり、Gebのコミュニティーはプルリクエストなどの要望にも丁寧に対応してくれます。
+GebのContributorを全員紹介するなど^[筆者はGebのContributorです。] ^[[https://youtu.be/yKFHmLYCfn0?t=2m9s](https://youtu.be/yKFHmLYCfn0?t=2m9s)] 気さくな性格であり、Gebのコミュニティーはプルリクエストなどの要望にも丁寧に対応してくれます。
 
 GebによるエンドツーエンドのテストはSpockと組み合わせることで、
 BDDスタイルのテスト記述やレポート出力など、上位のテストレベルと

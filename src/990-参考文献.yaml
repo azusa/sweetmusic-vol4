@@ -123,5 +123,33 @@ references:
   URL: https://qiita.com/PoohSunny/items/259560f00cface52ed23
   issued:
     year: 2014
+- id: Ito2016
+  title: 'Selenium実践入門 自動化による継続的なブラウザテスト'    
+  author:
+  - family: 伊藤
+    given: 望
+  - family: 戸田
+    given: 広
+  - family: 沖田
+    given: 邦夫
+  - family: 宮田
+    given: 淳平
+  - family: 長谷川
+    given: 淳
+  - family: 清水
+    given: 直樹
+  - family: Banthia
+    given: Vishal
+  issued:
+    year: 2016
+  publisher: 技術評論社
+- id: Takahashi2017
+  title: 'Groovy製のSeleniumラッパーライブラリ「Geb」で、可読性の高いテストを書いてみよう'   
+  author:
+  - family: 高橋
+    given: 陽太郎
+  issued:
+    year: 2017
+  URL: https://codezine.jp/article/detail/10456
 ---
 
