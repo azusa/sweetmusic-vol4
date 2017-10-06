@@ -125,7 +125,7 @@ class GebishOrgHomePage extends Page {
 ### ページオブジェクト上でのDOM要素の特定について
 
 Selenium WebDriverによってテストを記述する上でのセオリーとして、テストが
-記述するDOM上の要素に一意になるhtmlの`id`要素を振って、テストからDOMを
+参照するDOM上の要素に一意になるhtmlの`id`要素を振って、テストからDOMを
 参照する際は`id`要素を使ってアクセスするというものがあります。
 
 しかし近年のWebアプリケーション開発では、シングルページアプリケーション(SPA)の場合
@@ -160,7 +160,7 @@ $(cssセレクター, インデックスまたは範囲, 属性または文字�
 $("h1", 2, class: "heading")
  ```
 
-この`$`というメソッドが返すオブジェクトははGroovyのシンタックスとしては、
+この`$`というメソッドが返すオブジェクトはGroovyのシンタックスとしては、
 GroovyのmethodMissingという仕組みを使って
 `geb.Browser`クラス ^[[https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy](https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy)]
 を経由して呼び出される`geb.navigator.Navigator` ^[[http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html](http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html)]クラスのオブジェクトです。
