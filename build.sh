@@ -20,7 +20,7 @@ cat -n target/tmp.md
 
 pandoc -V fontsize:12pt -V papersize:b5 -V documentclass=ltjsarticle -s -f markdown+raw_tex+citations+yaml_metadata_block+fenced_code_blocks --filter pandoc-crossref -M "crossrefYaml=${PWD}/crossref_config.yaml" --filter pandoc-citeproc -o target/${OUTPUT}.pdf --latex-engine=lualatex -H h-luatexja.tex -A src/imprint.tex  --toc --toc-depth=2 -S target/tmp.md  --verbose
 cat src/epub.yaml >> target/tmp.md
-pandoc -V fontsize:14pt -V papersize:b5 -s -f markdown+raw_tex+citations+yaml_metadata_block+fenced_code_blocks --filter pandoc-crossref -M "crossrefYaml=${PWD}/crossref_config.yaml" --filter pandoc-citeproc -t epub3 -o target/${OUTPUT}.epub --latex-engine=lualatex -H h-luatexja.tex  --toc --toc-depth=2 -S  target/tmp.md  --verbose
+pandoc -V fontsize:12pt -V papersize:b5 -s -f markdown+raw_tex+citations+yaml_metadata_block+fenced_code_blocks+ignore_line_breaks --filter pandoc-crossref -M "crossrefYaml=${PWD}/crossref_config.yaml" --filter pandoc-citeproc -t epub3 -o target/${OUTPUT}.epub --latex-engine=lualatex -H h-luatexja.tex  --toc --toc-depth=2 -S  target/tmp.md  --verbose
 
 RET=$?
 set +e

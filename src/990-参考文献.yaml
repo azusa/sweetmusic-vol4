@@ -151,5 +151,28 @@ references:
   issued:
     year: 2017
   URL: https://codezine.jp/article/detail/10456
+- id: Huttermann2011
+  title: 'Agile ALM: Lightweight Tools and Agile Strategies'
+  author:
+  - family: Hüttermann
+    given: Michael
+  issued:
+    year: 2011
+  publisher: Manning
+- id: Debois2008
+  title: 'Agile Infrastructure & Operations'
+  author:
+  - family: Debois
+    given: Patrick
+  URL: http://www.jedi.be/presentations/agile-infrastructure-agile-2008.pdf
+  issued:
+    year: 2008
+- id: Ubiteku2015
+  title: 'DevOpsの起源とOpsを巡る対立'
+  author:
+  - family: ubiteku
+  issued:
+    year: 2015
+  URL: https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/
 ---
 

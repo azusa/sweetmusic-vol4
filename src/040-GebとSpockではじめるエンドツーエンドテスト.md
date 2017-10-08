@@ -72,9 +72,9 @@ TestNGおよびCucumber-JVMが示されています。
 本稿では、例示に使うテスティングフレームワークとしてSpockを使用します。
 SpockとGebが同じGroovyで記述されていることによる親和性の高さや、
 BDDスタイルでシナリオを記述することがエンドツーエンドのテストの
-シナリオを記述する上で使い勝手がよいためです。[@lst:040_code2]
+シナリオを記述する上で使い勝手がよいためです。[@lst:040_code1]
 
-```{#lst:040_code2 caption="Spockによる記述"}
+```{#lst:040_code1 caption="Spockによる記述"}
     def "Book of Gebの現行バージョンが表示できる"() {
         when: "Gebのホームページを表示する"
         to GebishOrgHomePage
@@ -109,9 +109,9 @@ BDDスタイルでシナリオを記述することがエンドツーエンド�
 Gebのページオブジェクトでは`geb.page.Page`クラスを継承して
 ページオブジェクトを記述します。その際にstaticな`at`クロージャーの
 中に、ページが含むべきDOMの要素の条件を記述することで、
-テスト内の画面遷移が正しいかを検証します。[@lst:040_code1] 
+テスト内の画面遷移が正しいかを検証します。[@lst:040_code2] 
 
-```{#lst:040_code1 caption="ページオブジェクト"}
+```{#lst:040_code2 caption="ページオブジェクト"}
 class GebishOrgHomePage extends Page {
 
     static at = { title == "Geb - Very Groovy Browser Automation" }
@@ -132,14 +132,14 @@ Selenium WebDriverによってテストを記述する上でのセオリーと�
 `id`要素を一意にするにはアプリケーション全体で`id`要素を一意にする必要があるという
 問題がありました。
 
-さらにWebアプリケーションのUIがリッチになる中でアプリケーションが動的に
+さらにWebアプリケーションのユーザーインターフェースがリッチになる中でアプリケーションが動的に
 DOMを生成することがありふれるものとなると、html内にhtmlの
 要素として`id`を記述すること自体がアプリケーションの開発スタイルと
 そぐわないものになってきました。
 
 このため、Gebによるエンドツーエンドのテストでページオブジェクトを
 使用する場合は、
-ページオブジェクトのプロパティー上で、この次に述べる`$`を使用したjQueryライクのまっチャーを使用してDOMの要素を特定し、
+ ページオブジェクトのプロパティー上で、この次に述べる`$`を使用したjQueryライクのマッチャーを使用してDOMの要素を特定し、
 テストからはページオブジェクトのプロパティー経由でDOMにアクセスすることで
 テストからDOMの要素を隠蔽するという手順を踏みます。
 
@@ -193,17 +193,15 @@ Gebでは非同期処理の記述を行うには、要素の出現判定する�
 Gebでは、クラスパス上の`GebConfig.groovy`上にテストを実行する上での
 各種設定を記述します。
 
-環境によって設定値を切り替える場合は、Gebでは、実行時にシステムプロパティー`geb.env`を設定することにより、`GebConfig.groovy`の`environments`ブロックで設定値の切り替えを行うことができます。^[[https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy](https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy)]
+環境によって設定値を切り替える場合は、Gebでは、実行時にシステムプロパティー`geb.env`を設定することにより、`GebConfig.groovy`の`environments`ブロックで設定値の切り替えを行うことができます。[@lst:040_code3] ^[[https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy](https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy)] 
 
-```
+```{#lst:040_code3 caption="環境による設定値の切り替え"}
 environments {
-	
 	// run via “./gradlew chromeTest”
 	// See: http://code.google.com/p/selenium/wiki/ChromeDriver
 	chrome {
 		driver = { new ChromeDriver() }
 	}
-
 	// run via “./gradlew chromeHeadlessTest”
 	// See: http://code.google.com/p/selenium/wiki/ChromeDriver
 	chromeHeadless {
@@ -213,7 +211,6 @@ environments {
 			new ChromeDriver(o)
 		}
 	}
-	
 	// run via “./gradlew firefoxTest”
 	// See: http://code.google.com/p/selenium/wiki/FirefoxDriver
 	firefox {
@@ -221,9 +218,7 @@ environments {
 
 		driver = { new FirefoxDriver() }
 	}
-
 }
-
 ```
 
 上記の例では、`build.gradle`内で`geb.env`にドライバーの種別を指定しています。
@@ -270,10 +265,10 @@ Chromeでは`chromedriver.exe`ないし`chromedriver`への絶対パスをシス
 
 ### Headless Chrome
 
-Chrome59より実装されたヘッドレス機能を使用するには、`GebConfig.groovy`のdriverを指定するクロージャー内で
-`org.openqa.selenium.chrome.ChromeOptions`に`headless`オプションを指定します。
+Chrome59より実装されたヘッドレス機能をGebで使用するには、`GebConfig.groovy`のdriverを指定するクロージャー内で
+`org.openqa.selenium.chrome.ChromeOptions`に`headless`オプションを指定します。[@lst:040_code4]
 
-```
+```{#lst:040_code4 caption="Chrome ヘッドレス機能の使用"}
 	chromeHeadless {
 		driver = {
 			ChromeOptions o = new ChromeOptions()
@@ -303,7 +298,7 @@ Edgeでは`MicrosoftWebDriver.exe`へのパスをシステムプロパティー`
 Linuxで実行されるように、複数の端末上でテストが実行される場合、スクリプト内で実行
 されるOSの判定を行い、適切な設定を行います。
 
-OSの判定は、`build.gradle`内ではGradleの`org.apache.tools.ant.taskdefs.condition.Os`で行います。
+OSの判定は、`build.gradle`内ではGradleのorg.apache.tools.ant.taskdefs.condition.Osで行います。
 `GebConfig.groovy`内で判定を行う場合はサードパーティーのライブラリーであるCommons Langの`org.apache.commons.lang.SystemUtils`を用いて行います。
 
 テスト実行のプロファイル事にDriverの実装を切り替えることにより、単一の
@@ -350,9 +345,9 @@ Gebでspock-reportsを使用するには、build.gradleで`com.athaydes:spock-re
 
 この際、Gebが依存するSpockのバージョンが`1.0-groovy-2.4`であり、
 spock-reportsが依存するのは`1.1-groovy-2.4`であるため、
-上記を共存させるための`build.gradle`は次の通りとなります。
+上記を共存させるための`build.gradle`は次の通りとなります。[@lst:040_code5]
 
-```
+```{#lst:040_code5 caption="spock-reportsを使用するbuild.gradle"}
     testCompile (group: 'com.athaydes', name: 'spock-reports',
      version: '1.3.2'){
         transitive = false
@@ -380,9 +375,9 @@ Gebでは`geb.spock.GebReportingSpec`を継承することで、テストの実�
 文字はテストを実行する側でエスケープする必要があります。
 
 文字列をエスケープするには、`GebConfig.groovy`に以下の通りの
-記述を追加します。
+記述を追加します。[@lst:040_code6]
 
-```
+```{#lst:040_code6 caption="スクリーンショットのファイル名のエスケープ"}
 reporter = new CompositeReporter(new PageSourceReporter(),
  new ScreenshotReporter() {
     @Override
@@ -393,7 +388,7 @@ reporter = new CompositeReporter(new PageSourceReporter(),
 ```
 ## Gebのリソース
 
-Gebは公式の英語によるドキュメント^[[http://www.gebish.org/manual/current/](http://www.gebish.org/manual/current/))]が充実しており、Gebを活用するにあたっては
+Gebは公式の英語によるドキュメント^[[http://www.gebish.org/manual/current/](http://www.gebish.org/manual/current/)]が充実しており、Gebを活用するにあたっては
 まずこちらを参照するとよいでしょう。
 
 またGebのソースコード^[[https://github.com/geb/geb](https://github.com/geb/geb)]は
