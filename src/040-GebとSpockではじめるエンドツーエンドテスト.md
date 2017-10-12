@@ -4,7 +4,7 @@
 
 # GebとSpockではじめるエンドツーエンドテスト
 
-本稿では、Groovyを使用したSelenium WebDriver拡張のブラウザー自動化ツールであるGebと、
+本稿では、プログラミング言語 Apache Groovy ^[以下Groovy] ^[[http://groovy-lang.org/](http://groovy-lang.org/)]を使用したSelenium WebDriver拡張のブラウザー自動化ツールであるGebと、
 同じくGroovyを用いるSpockを使用した、エンドツーエンドのテストについて述べます。
 
 ## アジャイルテストの四象限とエンドツーエンドテスト
@@ -42,7 +42,7 @@ Hüttermann氏は、アジャイル開発の中で、テストを通じてステ
 
 本稿では、[@fig:040_a_image]の中で、主に左上の象限に位置する、開発プロセスに於いてビジネス面の
 テストの自動化についてフォーカスします。
-その上で、プログラミング言語Apache Groovy ^[以下Groovy] ^[[http://groovy-lang.org/](http://groovy-lang.org/)]によって記述されたブラウザー自動化ツールであるGebと、
+その上で、Groovyによって記述されたブラウザー自動化ツールであるGebと、
 同じくGroovyによって記述されたテスティングフレームワークである
 Spockによるエンドツーエンドの手法について述べます。
 
@@ -139,7 +139,7 @@ DOMを生成することがありふれたものとなると、html内にhtmlの
 
 このため、Gebによるエンドツーエンドのテストでページオブジェクトを
 使用する場合は、
- ページオブジェクトのプロパティー上で、この次に述べる`$`を使用したjQueryライクのマッチャーを使用してDOMの要素を特定し、
+ ページオブジェクトのプロパティー上で、この次に述べる`$`を使用したjQueryライクのマッチャー等を使用してDOMの要素を特定し、
 テストからはページオブジェクトのプロパティー経由でDOMにアクセスすることで
 テストからDOMの要素を隠蔽するという手順を踏みます。
 
@@ -161,21 +161,35 @@ $("h1", 2, class: "heading")
  ```
 
 この`$`というメソッドが返すオブジェクトはGroovyのシンタックスとしては、
-GroovyのmethodMissingという仕組みを使って
+GroovyのmethodMissing ^[[http://groovy-lang.org/metaprogramming.html#_methodmissing](http://groovy-lang.org/metaprogramming.html#_methodmissing)]]という仕組みを使って
 `geb.Browser`クラス ^[[https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy](https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy)]
 を経由して呼び出される`geb.navigator.Navigator` ^[[http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html](http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html)]クラスのオブジェクトです。
 
-また、Gebのテストケース内ではこのmethodMissingの仕組みを使って、
+## GebとMethodMissing
+
+Gebのテストケース内ではこのmethodMissingの仕組みを使って、
 
 ```
 browser.to(GebishOrgHomePage)
 ```
 という記述を、
+
 ```
 to GebishOrgHomePage
 ```
 
 のように、簡略化して記述することが可能です。
+
+methodMissingの仕組みはIDE(統合開発環境)上でのコード補完や定義先ジャンプなどの
+インテリジェンスな機能と相性が悪く、
+JavaプログラマーにとってGebを敬遠する要因の一つとなっていました。
+
+Javaを主なターゲットとするIDEであるIntelliJ IDEAでは、Groovy向けのサポートを通じて、
+Gebのシナリオを記述する際に、以下のような機能を使うことができます。^[[http://www.gebish.org/manual/current/#intellij-idea-support](http://www.gebish.org/manual/current/#intellij-idea-support)]
+
+- `GebSpec`を継承したクラスでの`to`や`at`などの暗黙メソッドの解釈
+- `Page`および`Module`で定義したContent DSLの内容の、コード補完のサポート
+- `at {}`ならびに`content {}`内でのコード補完
 
 ## 非同期処理
 
