@@ -61,7 +61,8 @@ Webブラウザー上でのユーザーの操作に対してテストを行い�
 
 Gebは、Luke Daley氏、Marcin Erdmann氏、Chris Prior氏が中心となって開発を進めている
 オープンソースソフトウェアで、[http://gebish.org/](http://gebish.org/)で公開されています。
-ライセンスはApache License Version 2.0です。
+ライセンスはApache License Version 2.0で、本稿の執筆時での最新バージョンは1.1.です。
+
 Gebは、Groovyの言語機能を生かした簡潔な記述と、
 jQueryライクなDOMへアクセスするための式言語が特徴となっています。
 
@@ -71,8 +72,8 @@ TestNGおよびCucumber-JVMが示されています。
 
 本稿では、例示に使うテスティングフレームワークとしてSpockを使用します。
 SpockとGebが同じGroovyで記述されていることによる親和性の高さや、
-BDDスタイルでシナリオを記述することがエンドツーエンドのテストの
-シナリオを記述する上で使い勝手がよいためです。[@lst:040_code1]
+BDD(Behavior Driven Development)スタイルでシナリオを記述することが
+エンドツーエンドのテストのシナリオを記述する上で使い勝手がよいためです。[@lst:040_code1]
 
 ```{#lst:040_code1 caption="Spockによる記述"}
     def "Book of Gebの現行バージョンが表示できる"() {
@@ -161,11 +162,11 @@ $("h1", 2, class: "heading")
  ```
 
 この`$`というメソッドが返すオブジェクトはGroovyのシンタックスとしては、
-GroovyのmethodMissing ^[[http://groovy-lang.org/metaprogramming.html#_methodmissing](http://groovy-lang.org/metaprogramming.html#_methodmissing)]]という仕組みを使って
+GroovyのmethodMissing ^[[http://groovy-lang.org/metaprogramming.html#_methodmissing](http://groovy-lang.org/metaprogramming.html#_methodmissing)]という仕組みを使って
 `geb.Browser`クラス ^[[https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy](https://github.com/geb/geb/blame/master/module/geb-core/src/main/groovy/geb/Browser.groovy)]
 を経由して呼び出される`geb.navigator.Navigator` ^[[http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html](http://www.gebish.org/manual/current/api/geb/navigator/Navigator.html)]クラスのオブジェクトです。
 
-## GebとMethodMissing
+## GebとmethodMissing
 
 Gebのテストケース内ではこのmethodMissingの仕組みを使って、
 
@@ -207,35 +208,32 @@ Gebでは非同期処理の記述を行うには、要素の出現判定する�
 Gebでは、クラスパス上の`GebConfig.groovy`上にテストを実行する上での
 各種設定を記述します。
 
-環境によって設定値を切り替える場合は、Gebでは、実行時にシステムプロパティー`geb.env`を設定することにより、`GebConfig.groovy`の`environments`ブロックで設定値の切り替えを行うことができます。[@lst:040_code3] ^[[https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy](https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy)] 
+環境によって設定値を切り替える場合は、Gebでは、実行時にシステムプロパティー`geb.env`を設定することにより、`GebConfig.groovy`の`environments`ブロックで設定値の切り替えを行うことができます。 ^[[https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy](https://github.com/geb/geb-example-gradle/blob/master/src/test/resources/GebConfig.groovy)] 
+
+Gebの実行時に`geb.env`を切り替える場合は、Gradleの起動オプションでフラグ値を指定し、
+`build.gralle`内でフラグ値をシステムプロパティー`geb.env`に設定します。
+
+Gradleでは`gradle.properties`ないしコマンド実行時の`-P`オプションでプロパティーを
+指定するのが一般的です。[@lst:040_code3a]
+
+```{#lst:040_code3a caption="環境による設定値の切り替え"}
+gradlew test -Ptarget=heroku
+```
+
+次の例では、`build.gradle`内で`geb.env`に対象となるサイトのURLを指定しています。[@lst:040_code3]
 
 ```{#lst:040_code3 caption="環境による設定値の切り替え"}
 environments {
-	// run via “./gradlew chromeTest”
-	// See: http://code.google.com/p/selenium/wiki/ChromeDriver
-	chrome {
-		driver = { new ChromeDriver() }
+	gebishorg {
+		baseUrl = "http://gebish.org"
 	}
-	// run via “./gradlew chromeHeadlessTest”
-	// See: http://code.google.com/p/selenium/wiki/ChromeDriver
-	chromeHeadless {
-		driver = {
-			ChromeOptions o = new ChromeOptions()
-			o.addArguments('headless')
-			new ChromeDriver(o)
-		}
-	}
-	// run via “./gradlew firefoxTest”
-	// See: http://code.google.com/p/selenium/wiki/FirefoxDriver
-	firefox {
-		atCheckWaiting = 1
-
-		driver = { new FirefoxDriver() }
+	heroku {
+		baseUrl = "http://gebish.herokuapp.com"
 	}
 }
 ```
 
-上記の例では、`build.gradle`内で`geb.env`にドライバーの種別を指定しています。
+## クロスブラウザー
 
 Gebでは、
 使用するWebDriverを指定する上で`GebConfig.groovy`内の`driver`という変数に
@@ -243,27 +241,24 @@ Gebでは、
 - WebDriverの実装クラス名を指す文字列
 - WebDriverのインスタンスを返すクロージャー
 
-のどちらか示すという仕様があり^[[http://www.gebish.org/manual/current/#driver-class-name](http://www.gebish.org/manual/current/#driver-class-name)]、それぞれのブロック内でその処理を行っています。
+のどちらかを示すという仕様があり^[[http://www.gebish.org/manual/current/#driver-class-name](http://www.gebish.org/manual/current/#driver-class-name)]、それぞれのブロック内でその処理を行っています。
 
-Gebの`geb-example-gradle`等では、システムプロパティー`geb.env`を使用するブラウザーの
+Gebの公式サンプルである`geb-example-gradle` ^[[https://github.com/geb/geb-example-gradle](https://github.com/geb/geb-example-gradle)]では、システムプロパティー`geb.env`を使用するブラウザーの
 切り替えに使用していますが、例えば開発環境とステージング環境等の複数環境でGebによる
-テストを行う際には、`geb.env`はどちらか片方の用途にしか用いることはできません。
+テストを行う際には、`geb.env`はドライバーの指定と実行環境の指定どちらかにしか用いることはできません。
 
 この場合、「開発環境とステージング環境」のような対象となる環境の切り替えにシステム
 プロパティー`geb.env`を使用し、ブラウザーの切り替えには別の手段を用いて切り替えを
 行った方がスマートであると筆者は考えます。
 
-## クロスブラウザー
 
-システムプロパティー`geb.env`を用いないでテスト実行時に使用するブラウザーを切り替えるには、`build.gradle`等のビルドスクリプトから別のシステムプロパティーを使って
+システムプロパティー`geb.env`を用いないでテスト実行時に使用するブラウザーを切り替えるには、
+`build.gradle`等のビルドスクリプトから別のシステムプロパティーを使って
 フラグを渡し、`GebConfig.groovy`内でこのシステムプロパティーを参照してブラウザー
 を切り替えるという手順を踏みます。
 
-Gradleでは`gradle.properties`ないしコマンド実行時の`-P`オプションでプロパティーを
-指定するのが一般的です。
 
 WebDriverはW3CでDriverのインターフェースと仕様が規定されており^[[https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebDriver.html](https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebDriver.html)]、
-
 それに対して、各ブラウザーの開発元がDriverの実装を提供するという枠組みになっています。
 `geb-example-gradle`ではChromeとFirefoxでの実装を指定する例が提供されて
 います。
@@ -279,17 +274,27 @@ Chromeでは`chromedriver.exe`ないし`chromedriver`への絶対パスをシス
 
 ### Headless Chrome
 
-Chrome59より実装されたヘッドレス機能をGebで使用するには、`GebConfig.groovy`のdriverを指定するクロージャー内で
+Chrome59より実装されたヘッドレス機能をGebで使用するには、`GebConfig.groovy`のdriverを
+指定するクロージャー内で  
 `org.openqa.selenium.chrome.ChromeOptions`に`headless`オプションを指定します。[@lst:040_code4]
 
 ```{#lst:040_code4 caption="Chrome ヘッドレス機能の使用"}
-	chromeHeadless {
-		driver = {
-			ChromeOptions o = new ChromeOptions()
-			o.addArguments('headless')
-			new ChromeDriver(o)
-		}
+case "chromeHeadless" :
+	setUpChromeDriver(BUILD_DIR)
+	driver = {
+		ChromeOptions o = new ChromeOptions()
+		o.addArguments('headless')
+		new ChromeDriver(o)
 	}
+	break
+(略)
+private void setUpChromeDriver(String buildDir) {
+	def chromedriverFilename =
+			SystemUtils.IS_OS_WINDOWS ?
+					"chromedriver.exe" : "chromedriver"
+	System.setProperty "webdriver.chrome.driver",
+			"$buildDir/webdriver/chromedriver/$chromedriverFilename"
+}
 ```	
 
 ### Firefox
@@ -308,20 +313,28 @@ Internet Explorer 11(IE11)では`IEDriverServer.exe`への絶対パスをシス�
 
 Edgeでは`MicrosoftWebDriver.exe`へのパスをシステムプロパティー`webdriver.edge.driver`に設定します。
 
+サンプル内では、ChromeとFirefox向けのDriverのダウンロードならびに展開ははgraldeのテスト実行時に
+前処理として行うようにしています。IDEでのセットアップのためにダウンロードを単独で行う場合は
+build.gradle内の`unzipGeckoDriver`タスクないし`unzipChromeDriver`タスクを単独で実行します。
+
+IE11ならびにEdge向けのドライバーはgitレポジトリー内に`git-lfs`を使用して格納しています。
+
 また、開発者の端末はWindowsであり、継続的インテグレーション(CI)のサーバー上では
 Linuxで実行されるように、複数の端末上でテストが実行される場合、スクリプト内で実行
 されるOSの判定を行い、適切な設定を行います。
 
-OSの判定は、`build.gradle`内ではGradleのorg.apache.tools.ant.taskdefs.condition.Osで行います。
-`GebConfig.groovy`内で判定を行う場合はサードパーティーのライブラリーであるCommons Langの`org.apache.commons.lang.SystemUtils`を用いて行います。
+OSの判定は、Gradleのビルドスクリプト内ではGradleに組み込まれている  
+`org.apache.tools.ant.taskdefs.condition.Os`クラスで行います。
+`GebConfig.groovy`内で判定を行う場合はサードパーティーのライブラリーであるCommons Langの
+`org.apache.commons.lang3.SystemUtils`クラスを用いてOSの判定を行います。
 
-テスト実行のプロファイル事にDriverの実装を切り替えることにより、単一の
+テスト実行のオプション指定でDriverの実装を切り替えることにより、単一の
 アプリケーションに対してクロスブラウザーでのエンドツーエンドのテストを
 行うことが可能です。
-ですが、InternetExploerやEdgeのDriver実装は、非同期処理を伴わない
+ですが、例えばInternetExploerやEdgeのDriver実装は、非同期処理を伴わない
 画面遷移であっても、`GebConfig.groovy`の`waiting`ブロックによる
 タイムアウトの設定を長めにとらないとDOMの要素を適切に取得できないなどの
-問題があり、このようなテスト実行の上で考慮すべき問題はブラウザーごとに
+問題があります。このようなテスト実行の上で考慮すべき問題はブラウザーごとに
 存在します。
 
 UIの単体テストでなく、アプリケーションのシナリオを通じてユースケースを
@@ -330,13 +343,6 @@ UIの単体テストでなく、アプリケーションのシナリオを通じ
 テストの対象とするブラウザーをピックアップすることが望ましいです。
 そのテスト運用が安定してから、さらなる品質向上を目指してクロスブラウザー
 でのエンドツーエンドのテストに取り組むのが良いでしょう。
-
-## マルチステージ
-
-先述した通り、Gebでは、実行時にシステムプロパティー`geb.env`を設定することにより、
-`GebConfig.groovy`の`environments`ブロックで設定値の切り替えを行うことが
-できます。これを使用した`GebConfig.groovy`の記述のサンプルは以下の通りと
-なります。
 
 ## レポーティング
 
@@ -347,19 +353,19 @@ SpockではRenato Athaydes氏が開発しているspock-reports^[[https://github
 
 
 SpockでGebのテストを記述する際、Feature Method内の`given`-`when`-`then`内に
-文字列でシナリオを記述することにより、レポートで見た際にテストが
-行っていることをわかりやすく記述させることができます。
+シナリオを記述することにより、レポートで見た際にテストが
+行っていることをわかりやすく記述させることができます。[@lst:040_code5a]
 
-```
+```{#lst:040_code5a caption="Spock内でのシナリオ記述"}
     then: "currentのリンクがcurrentではじまっている"
     manualsMenu.links[0].text().startsWith("current")
 ```
 
 Gebでspock-reportsを使用するには、build.gradleで`com.athaydes:spock-repots`を依存性に追加します。
 
-この際、Gebが依存するSpockのバージョンが`1.0-groovy-2.4`であり、
+この際、Gebが依存するSpockのバージョンが`1.0-groovy-2.4`であり、^[本稿の執筆中にリリースされたGeb 2.0-rc-1では、Gebが依存するSpockが1.1-groovy-2.4に変更されました。]
 spock-reportsが依存するのは`1.1-groovy-2.4`であるため、
-上記を共存させるための`build.gradle`は次の通りとなります。[@lst:040_code5]
+上記を共存させるための`build.gradle`は次の通りとなります。[@lst:040_code5] 
 
 ```{#lst:040_code5 caption="spock-reportsを使用するbuild.gradle"}
     testCompile (group: 'com.athaydes', name: 'spock-reports',
@@ -378,28 +384,18 @@ spock-reportsが依存するのは`1.1-groovy-2.4`であるため、
 
 ```
 
-## スクリーンショット取得時の注意点
+spock-reportsはレポートの作成時にGradleを起動するJVMのデフォルトエンコーディングを
+参照しており、レポート表示時の文字化けを回避するにはデフォルトエンコーディングの指定が
+UTF-8である必要があります。この指定のためには、Gradleのラッパースクリプトである
+`gradlew`(UNIX系)ないし`gradlew.bat`(Windows)内で環境変数`DEFAULT_JVM_OPTS`に
+`-Dfile.encoding=UTF-8`を記述します。
 
-Gebでは`geb.spock.GebReportingSpec`を継承することで、テストの実行時に
-自動でスクリーンショットを取得することができます。
+また、Gebでは`geb.spock.GebReportingSpec`を継承することで、テストの実行時に
+自動でスクリーンショットを取得することができます。取得したスクリーンショットは
+システムプロパティー`geb.build.reportsDir`で指定したディレクトリーに
+作成されます。
 
-この際、スクリーンショットのファイル名はFeature Methodの名称に従って作成
-されますが、Spockの場合はJavaで扱うことのできる文字列であればメソッドの
-名称に制約がないので、実行するOSのファイルシステムで扱うことのできない
-文字はテストを実行する側でエスケープする必要があります。
 
-文字列をエスケープするには、`GebConfig.groovy`に以下の通りの
-記述を追加します。[@lst:040_code6]
-
-```{#lst:040_code6 caption="スクリーンショットのファイル名のエスケープ"}
-reporter = new CompositeReporter(new PageSourceReporter(),
- new ScreenshotReporter() {
-    @Override
-    protected escapeFileName(String name) {
-        name.replaceAll(/^[\\\/:\*?"<>\|\s]+$/, "_")
-    }
-})
-```
 ## Gebのリソース
 
 Gebは公式の英語によるドキュメント^[[http://www.gebish.org/manual/current/](http://www.gebish.org/manual/current/)]が充実しており、Gebを活用するにあたっては
@@ -417,7 +413,8 @@ Web上のリソースとしては、「Groovy製のSeleniumラッパーライブ
 また2016年12月に開かれた「Geb Advent Calendar 2016」^[[https://qiita.com/advent-calendar/2016/geb](https://qiita.com/advent-calendar/2016/geb)] にも日本語でのGebに関するエントリーが集積されています。
 
 Gebのメイン開発者であるMarcin Erdmann氏はカンファレンスに登壇した際に
-GebのContributorを全員紹介するなど^[筆者はGebのContributorです。] ^[[https://youtu.be/yKFHmLYCfn0?t=2m9s](https://youtu.be/yKFHmLYCfn0?t=2m9s)] 気さくな性格であり、Gebのコミュニティーはプルリクエストなどの要望にも丁寧に対応してくれます。
+GebのContributorを全員紹介するなど^[筆者はGebのContributorです。] ^[[https://youtu.be/yKFHmLYCfn0?t=2m9s](https://youtu.be/yKFHmLYCfn0?t=2m9s)] コミュニティーに対して友好的であり、
+Gebのコミュニティーはプルリクエストなどの要望にも丁寧に対応してくれます。
 
 GebによるエンドツーエンドのテストはSpockと組み合わせることで、
 BDDスタイルのテスト記述やレポート出力など、上位のテストレベルと

@@ -174,5 +174,13 @@ references:
   issued:
     year: 2015
   URL: https://ubiteku.oinker.me/2015/07/01/devops%E3%81%AE%E8%B5%B7%E6%BA%90%E3%81%A8ops%E3%82%92%E5%B7%A1%E3%82%8B%E5%AF%BE%E7%AB%8B/
+- id: Natumi2010
+  title: 'なれる! SE2 基礎から学ぶ？運用構築'
+  author:
+  - family: 夏海
+    given: 公司
+  issued:
+    year: 2010
+  publisher: アスキー・メディアワークス
 ---
 
