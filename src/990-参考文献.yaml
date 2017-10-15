@@ -69,7 +69,11 @@ references:
   - given: 太一
     family: 佐藤
   issued:
-    year: 2015   
+    year: 2015
+  type: article-journal
+  language: ja
+  volumn: VOL.95
+  container-title: WEB+DB PRESS VOL.85     
 - id: Kim2014
   title: 'The Phoenix Project: A Novel About IT, DevOps, and Helping Your Business Win（「The DevOps 逆転だ! 究極の継続的デリバリー」）'
   author:

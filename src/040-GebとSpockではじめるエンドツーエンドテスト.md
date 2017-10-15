@@ -134,14 +134,15 @@ Selenium WebDriverによってテストを記述する上でのセオリーと�
 問題がありました。
 
 さらにWebアプリケーションのユーザーインターフェースがリッチになる中でアプリケーションが動的に
-DOMを生成することがありふれたものとなると、html内にhtmlの
+DOMを生成することがありふれたものとなってきました。すると、html内にhtmlの
 要素として`id`を記述すること自体がアプリケーションの開発スタイルと
 そぐわないものになってきました。
 
 このため、Gebによるエンドツーエンドのテストでページオブジェクトを
 使用する場合は、
- ページオブジェクトのプロパティー上で、この次に述べる`$`を使用したjQueryライクのマッチャー等を使用してDOMの要素を特定し、
-テストからはページオブジェクトのプロパティー経由でDOMにアクセスすることで
+ページオブジェクトのプロパティー上で、この次に述べる`$`を使用したjQueryライクの
+マッチャー等を使用してDOMの要素を特定します。
+そしてテストからはページオブジェクトのプロパティー経由でDOMにアクセスすることで
 テストからDOMの要素を隠蔽するという手順を踏みます。
 
 ## $関数
@@ -188,7 +189,7 @@ JavaプログラマーにとってGebを敬遠する要因の一つとなって�
 Javaを主なターゲットとするIDEであるIntelliJ IDEAでは、Groovy向けのサポートを通じて、
 Gebのシナリオを記述する際に、以下のような機能を使うことができます。^[[http://www.gebish.org/manual/current/#intellij-idea-support](http://www.gebish.org/manual/current/#intellij-idea-support)]
 
-- `GebSpec`を継承したクラスでの`to`や`at`などの暗黙メソッドの解釈
+- `geb.spock.GebSpec`を継承したクラスでの`to`や`at`などの暗黙メソッドの解釈
 - `Page`および`Module`で定義したContent DSLの内容の、コード補完のサポート
 - `at {}`ならびに`content {}`内でのコード補完
 
@@ -265,6 +266,7 @@ WebDriverはW3CでDriverのインターフェースと仕様が規定されて�
 
 この際、ブラウザーによってはブラウザーとの間とのブリッジとなるネイティブランタイムを
 配置する必要があります。その場合、ランタイムのパスはWebDriverの指定とは別のシステムプロパティーで指定します。
+次に各ブラウザーごとの指定方法を示します。
 
 ### Chrome
 
@@ -309,11 +311,11 @@ Internet Explorer 11(IE11)では`IEDriverServer.exe`への絶対パスをシス�
 
 ![IE11の保護モードの設定](src/img/ie.png){#fig:040_c_image}
 
-### Edge
+### Microsoft Edge
 
-Edgeでは`MicrosoftWebDriver.exe`へのパスをシステムプロパティー`webdriver.edge.driver`に設定します。
+Microsoft Edge ^[以下Edge] では`MicrosoftWebDriver.exe`へのパスをシステムプロパティー`webdriver.edge.driver`に設定します。
 
-サンプル内では、ChromeとFirefox向けのDriverのダウンロードならびに展開ははgraldeのテスト実行時に
+本章のサンプル^[[https://github.com/azusa/techbookfest3-geb](https://github.com/azusa/techbookfest3-geb)]内では、ChromeとFirefox向けのDriverのダウンロードならびに展開ははGraldeのテスト実行時に
 前処理として行うようにしています。IDEでのセットアップのためにダウンロードを単独で行う場合は
 build.gradle内の`unzipGeckoDriver`タスクないし`unzipChromeDriver`タスクを単独で実行します。
 
@@ -347,7 +349,7 @@ UIの単体テストでなく、アプリケーションのシナリオを通じ
 ## レポーティング
 
 SpockではRenato Athaydes氏が開発しているspock-reports^[[https://github.com/renatoathaydes/spock-reports](https://github.com/renatoathaydes/spock-reports)]という拡張を
-使用することにより、BDDに即した形でのレポート表示を行うことが可能です。[@fig:040_b_image]
+使用することにより、BDDのスタイルに即した形でのレポート表示を行うことが可能です。[@fig:040_b_image]
 
 ![spock-reportsによるレポート表示](src/img/spock-report.png){#fig:040_b_image}
 
@@ -363,9 +365,9 @@ SpockでGebのテストを記述する際、Feature Method内の`given`-`when`-`
 
 Gebでspock-reportsを使用するには、build.gradleで`com.athaydes:spock-repots`を依存性に追加します。
 
-この際、Gebが依存するSpockのバージョンが`1.0-groovy-2.4`であり、^[本稿の執筆中にリリースされたGeb 2.0-rc-1では、Gebが依存するSpockが1.1-groovy-2.4に変更されました。]
+この際、Gebが依存するSpockのバージョンが`1.0-groovy-2.4`であり
 spock-reportsが依存するのは`1.1-groovy-2.4`であるため、
-上記を共存させるための`build.gradle`は次の通りとなります。[@lst:040_code5] 
+上記を共存させるための`build.gradle`は次の通りとなります。[@lst:040_code5] ^[本稿の執筆中にリリースされたGeb 2.0-rc-1では、Gebが依存するSpockが1.1-groovy-2.4に変更されました。]
 
 ```{#lst:040_code5 caption="spock-reportsを使用するbuild.gradle"}
     testCompile (group: 'com.athaydes', name: 'spock-reports',
