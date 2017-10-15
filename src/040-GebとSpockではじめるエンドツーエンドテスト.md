@@ -415,7 +415,7 @@ Web上のリソースとしては、「Groovy製のSeleniumラッパーライブ
 また2016年12月に開かれた「Geb Advent Calendar 2016」^[[https://qiita.com/advent-calendar/2016/geb](https://qiita.com/advent-calendar/2016/geb)] にも日本語でのGebに関するエントリーが集積されています。
 
 Gebのメイン開発者であるMarcin Erdmann氏はカンファレンスに登壇した際に
-GebのContributorを全員紹介するなど^[筆者はGebのContributorです。] ^[[https://youtu.be/yKFHmLYCfn0?t=2m9s](https://youtu.be/yKFHmLYCfn0?t=2m9s)] コミュニティーに対して友好的であり、
+スライド中でGebのContributorを全員紹介するなど^[筆者はGebのContributorです。] ^[[https://youtu.be/yKFHmLYCfn0?t=2m9s](https://youtu.be/yKFHmLYCfn0?t=2m9s)] コミュニティーに対して友好的であり、
 Gebのコミュニティーはプルリクエストなどの要望にも丁寧に対応してくれます。
 
 GebによるエンドツーエンドのテストはSpockと組み合わせることで、
